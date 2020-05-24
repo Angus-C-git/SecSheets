@@ -21,13 +21,13 @@ Buffer Overflow vectors/vulnrabilities commonly arise when:
 
 ### Anatomy of Memory
 
-![Memory Diagram](~/images/MemoryDiagram.png "Memory Diagram")
+![Memory Diagram](images/MemoryDiagram.png "Memory Diagram")
 
 ### Anatomy of the Stack
 
 ~ Note diagram assumes little-endian addressing
 
-![Stack Diagram](~/images/StackDiagram.png "Stack Diagram")
+![Stack Diagram](images/StackDiagram.png "Stack Diagram")
 
 
 ## Executing a Buffer Overflow
