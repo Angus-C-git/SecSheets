@@ -71,9 +71,7 @@ Command line debugger for linux. Should be installed by default. Install:
 
 ### Imunity Debugger
 
-
-
-## Mac OS
+GUI based debugger for windows. Download the executable here
 
 # Locating
 
@@ -100,11 +98,51 @@ Generic send tcp is a spiking/fuzzing tool for remote targets.
 
 s_readline(); //Read standard out (after connect)
 s_string("Relevant Server Command to Test "); //Send string to remote prompt
-s_string_variable("Argument To Fuzz"); //Send a arbitary argument that generic send tcp will use to fuzz for vulnerabilities 
+s_string_variable("Argument To Fuzz"); //Send a arbitary argument that will be used to fuzz for vulnerabilities 
 ```
 
 ## Fuzzing
 
++ Fuzzing is used to determine at which input byte size (input string length) a program crashes/segmentation faults
++ Knowing this length is important to crafting exploits for the return pointer/EIP to 'execute'
+
+### Simple Python Remote Target Fuzzer
+
+Simple remote server fuzzer template, useful for finding the byte size at which a remote buffer overflows:
+
+```
+import sys, socket
+from time import sleep
+
+current_buffer = "A" * 100  # Arbitary inital buffer length --> Should be adapted on a scenario basis
+target_ip = '192.168.0.0'  # Place holder host/target/remote server IP address
+target_port = 9999  # Place holder host/target/remote server port number
+
+
+while True:
+
+	try:
+
+		sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		sock.connect(('{target_ip}', target_port))  # Form socket connection to remote server
+
+		sock.send(('RELEVANT SERVER COMMAND' + current_buffer))  # Add current test buffer size as an argument to fuzz desired command
+		sock.close()
+		sleep(1)  # Reduce load on remote server
+
+		current_buffer = current_buffer + "A" * 100  # Index the buffer by another arbitary ammount
+
+	except: 
+
+		print("Fuzzing crashed at {} bytes".format(len(current_buffer)))
+		sys.exit()
+
+```
+
+~ Note this script can also be found seperately under the `scripts/` directory
 
 
 # Exploiting
+
+## Locating Offsets
+
