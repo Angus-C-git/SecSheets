@@ -59,6 +59,52 @@ Buffer Overflow vectors/vulnrabilities commonly arise when:
 
 # Tooling
 
+## Linux
+
+### GDB
+
+Command line debugger for linux. Should be installed by default. Install:
+
+`sudo apt-get install gdb`
+
+## Windows
+
+### Imunity Debugger
+
+
+
+## Mac OS
+
 # Locating
+
+## Spiking
+
++ Spiking is the process of looking for input vectors that may facilitate a buffer oveflow attack
++ Best optimised with scripts
++ Typically done on remote targets where the binary can't be decompiled
+
+### Using 'generic send tcp'
+
+Generic send tcp is a spiking/fuzzing tool for remote targets.
+
+#### Usage
+
+`generic_send_tcp (host) (port) (spike_script.spk) (SKIPVAR) (SKIPSTR)`
+
+`generic_send_tcp 192.168.0.100 701 login.spk 0 0`
+
+#### Spike Script
+
+```
+//Example spike script
+
+s_readline(); //Read standard out (after connect)
+s_string("Relevant Server Command to Test "); //Send string to remote prompt
+s_string_variable("Argument To Fuzz"); //Send a arbitary argument that generic send tcp will use to fuzz for vulnerabilities 
+```
+
+## Fuzzing
+
+
 
 # Exploiting
