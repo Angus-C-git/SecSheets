@@ -1,0 +1,146 @@
+Web Application: Enumeration
+============================
+
+# Overview
+
+# Recon
+
+## Target Validation/Identification
+
+### WHOIS
+
++ Grab whois record for target
+
+`whois domain.com`
+
+### nslookup
+
++ Translate domain names into IP addresses
+
+`nslookup domain.com`
+
+### dnsrecon
+
++ DNS record enumeration, subdomain enumeration
+
+`dnsrecon -d domain.com`
+
+## Subdomain Enumeration
+
+### dig
+
++ DNS walk, DNS records
+
+`dig domain.com any`
+
+### Nmap
+
+#### Baisc Scan
+
+`nmap domain.com`
+
+#### Server Finger Printing
+
+`nmap -p 80,443 -A t4 (target_ip)`
+
+### Sublist3r
+
++ Subdomain discovery, Subdomain bruteforce, OSINT discovery
+
+`python sublist3r.py -d domain.com`
+
+### Bluto
+
++ Domain enumeration, api enumeration
+
+`bluto -d domain.com`
+
+### crt.sh
+
++ Certificate search
+
+[crt.sh](https://crt.sh/)
+
+## Fingerprinting
+
++ Nmap
++ Wappalyzer {Browser Extension}
++ BuiltWith {Browser Extension}
++ Netcat
+
+## Data Breaches
+
++ Does target related material appear in data breaches
++ [haveibeenpawned](https://haveibeenpwned.com/)
++ [weleakinfo](http://weleakinfo.com/) ~ Seized by Feds
++ [hunter.io](https://hunter.io/)
+
+## Maintaing Scope
+
+### Burp Scope Settings
+
+#### URL Regex
+
+In Scope:
+
+`.*\.domain\.com$`
+
+Exclusion:
+
++ Remove from scope option in burp settings
+
+## Spidering/Crawling
+
+### Burp Suite
+
++ Domain -> Scan -> Crawl
+
+### Zap Proxy
+
++ Quickstart -> Domain -> Attack
+
+### Manual Spidering/Crawling
+
++ Move through the website as a developer
++ How can you break it?
+
+## Basic Vulnrability Scanning
+
+### Nikto Vuln Scanner
+
++ On real world targets will rarely find anything
+
+`nikto -h https://www.domain.com`
+
+## SSL/TLS Varification/Validation
+
+~ Note: Very rare
+
++ Check the integrity of SSL/TLS ciphers
+
+### Nmap Script
+
+`nmap -p 443 --script=ssl-enum-ciphers (target_ip)`
+
+## Directory Discovery
+
+### Dirbuster
+
+`dirb domain wordlist`
+
+
+### Manual Discovery
+
++ Common dirs
++ Target specific directories, guess possible strings
+
+## Source Inclusion/Console Data
+
++ Developer data
++ Source comments
++ Console.logs
++ JavaScript function exposure
+
+## Redirects
+
+## DRY
