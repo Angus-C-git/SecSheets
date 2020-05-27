@@ -3,7 +3,11 @@ Web Application: Enumeration
 
 # Overview
 
-# Recon
++ Recon and enumeration is about getting a bigger picture of a target
++ Recon and enumeration are critical prerequisites to getting a successful exploit
++ Knowing the technologies the target employes allows an attacker to eliminate false positives, more accurately test for vulnrabilities and saves time in the long run
+
+# Passive Recon
 
 ## Target Validation/Identification
 
@@ -89,6 +93,8 @@ Exclusion:
 
 + Remove from scope option in burp settings
 
+# Active Recon
+
 ## Spidering/Crawling
 
 ### Burp Suite
@@ -140,7 +146,15 @@ Exclusion:
 + Source comments
 + Console.logs
 + JavaScript function exposure
++ Removed functionality
 
-## Redirects
+## DRY && Wet Principles
 
-## DRY
++ Broken form validation
++ Broken front end checks
+
+## UI Bypassing
+
++ Editing front-end elements to bypass UI barriers
++ Forging/editing requests
+
