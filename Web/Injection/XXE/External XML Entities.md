@@ -19,7 +19,7 @@ Extensible Markup Language is a way of structuring data similar to JSON which ha
 ```
 
 + Tags are case sensitve
-+ "",'',<,> are illigal characters in XML due to the parser not knowing how to handel it
++ "",'',<,> are illigal characters in XML due to the parser not knowing how to handel them
 
 ## Entities && The DTD
 
