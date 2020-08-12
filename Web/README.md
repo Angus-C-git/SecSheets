@@ -2,7 +2,7 @@
 
 ## [Recon](./Recon)
 
-### [Enumeration](/Recon/Enumeration.md)
+### [Enumeration](./Recon/Enumeration.md)
 
 #### [Overview](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Recon/Enumeration.md#overview)
 
@@ -34,12 +34,66 @@
 
 ##### [UI Bypassing](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Recon/Enumeration.md#ui-bypassing)
 
-## [Injection](/Injection)
+## [Injection](./Injection)
 
-### [SQLi](/Injection/SQLI/SQLI.md)
+### [SQLi](./Injection/SQLI/SQLI.md)
 
 #### [Atonomy of a SQL Query](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/SQLI/SQLI.md#atonomy-of-a-sql-query)
 
-### [XSS](/Injection/XSS/XSS.md)
+### [XSS](./Injection/XSS/XSS.md)
 
-## [SSRF](/SSRF)
+#### [Identification Payloads](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#identification-payloads)
+
+##### [Polyglots](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#polyglots)
+
+##### [Basic Payloads](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#basic-payloads)
+
+##### [Filter Bypass Payloads](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#filter-bypass-payloads)
+
+##### [DOM Event Based Payloads](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#dom-event-based-payloads)
+
+##### [Encoded Payloads](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#encoded-payloads)
+
+##### [JSONP Payloads](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#jsonp-payloads)
+
+##### [Image/File Upload Based Payloads](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#imagefile-upload-based-payloads)
+
+#### [Exploit Payloads](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#exploit-payloads)
+
+##### [Phishing Redirect](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#phishing-redirect)
+
+##### [Exfiltrate Auth Tokens/Cookies](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#exfiltrate-auth-tokenscookies)
+
+##### [Grab Protected Pages](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#grab-protected-pages)
+
+##### [Grab Specific Page Data](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#grab-specific-page-data)
+
+##### [Grab Screenshots](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#grab-screenshots)
+
+##### [Forced Download](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#forced-download)
+
+##### [Capture Data From Webcam](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#capture-data-from-webcam)
+
+##### [Reverse Shell](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#reverse-shell)
+
+##### [Run Keylogger](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#run-keylogger)
+
+##### [Steal Saved Browser Credentails](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#steal-saved-browser-credentails)
+
+#### [Exfiltration Servers/Listeners](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#exfiltration-serverslisteners)
+
+#### [Tips && Tricks](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#tips--tricks)
+
+##### [Payload Doesn't Work](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#payload-doesnt-work) 
+
+##### [Genral Tips](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#genral-tips)
+
+##### [Unsorted Workarounds](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#unsorted-workarounds)
+
+#### [Finding && Exploiting XSS](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#finding--exploiting-xss)
+
+##### [Identification Checklist](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#identification-checklist)
+
+#### [Resources](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#resources)
+
+## [SSRF](./SSRF/SSRF.md)
