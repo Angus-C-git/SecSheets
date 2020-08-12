@@ -155,6 +155,8 @@ Exclusion:
 
 ## UI Bypassing
 
-+ Editing front-end elements to bypass UI barriers
++ Editing front-end DOM elements to bypass UI barriers
+	+ `pattern={1-9}` -> delete
+	+ `type="email"` -> `type="text"`
 + Forging/editing requests
 
