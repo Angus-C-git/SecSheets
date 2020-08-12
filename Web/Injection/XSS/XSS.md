@@ -3,7 +3,6 @@ Cross Site Scripting {XSS}
 
 # Identification Payloads
 
-+ An exhaustive list of XSS test payloads can be found under `~/scripts/xss_complete.txt`   
 
 ## Polyglots
 
@@ -515,9 +514,19 @@ the `+` character in many cases will be 'transformed' into a `space` character c
 + Try alternative HTML tags/attributes
 + Check W3C and other online resoruces to see what browsers support elements of your payload
 
-## Payload Works In Modified Request/Locally But Breaks In Flight
+## Genral Tips
 
-+ Refers to payloads which trigger 
++ Inject payloads through burp where possible to observe if they are encoded correctly
++ Check the dev console after injecting a payload
+	+ Look for CSP blocks
+	+ Syntax errors
++ Check the DOMs interpretation of the payload with inspect/view source
+
+## Unsorted Workarounds
+
++ Try double URL encoding bad characters
++ Base 64 encode long strings and then use the JS `atob(string)` in the payload body to decode the string back to plain text 
++ Add or remove `;//` after url strings 
 
 # Finding && Exploiting XSS
 
@@ -555,3 +564,8 @@ the `+` character in many cases will be 'transformed' into a `space` character c
 + [OSWAP Cheat-sheet](https://owasp.org/www-community/xss-filter-evasion-cheatsheet)
 + [GBHackers Top 500 XSS Cheat sheet](https://gbhackers.com/top-500-important-xss-cheat-sheet/)
 + [Chef Secure](https://www.youtube.com/channel/UCqx-vnWwxXQEJ0TC5a6vuNw)
+
+
+## Found a mistake or think somethings missing?
+
++ Make a pull request or leave a comment!
