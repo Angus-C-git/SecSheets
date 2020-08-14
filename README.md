@@ -1,9 +1,14 @@
-Sec Sheets
+SecSheets
 ==========
 
-Welcome to Sec Sheets a collection of cheat sheets && accompanying code fragments/payloads for security topics.
+Welcome to SecSheets a collection of security cheat sheets && accompanying code fragments/payloads.
 
 ## Overview
 
-Sec Sheets is always a work in progress with new sheets being added! If you have a sheet you'd like to add or content you think is helpful/intresting make a pull request <3.
+SecSheets is always a work in progress with new sheets being added! If you have a sheet you'd like to add or content you think is helpful/intresting make a pull request <3.
+
+# Contents
+
+## $1 - [Binary Exploitation](./Binary\/Exploitation) 
+## $2 - [Web](./Web)
 
