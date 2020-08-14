@@ -96,4 +96,14 @@
 
 #### [Resources](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XSS/XSS.md#resources)
 
+### [XXE](./Injection/XXE/XXE.md)
+
+#### [Overview](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/External%20XML%20Entities.md#overview)
+
+##### [XML](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/External%20XML%20Entities.md#xml)
+
+##### [Entities && The DTD](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/External%20XML%20Entities.md#entities--the-dtd)
+
+#### [XXE Types](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/External%20XML%20Entities.md#xxe-types)
+
 ## [SSRF](./SSRF/SSRF.md)
