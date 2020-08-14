@@ -98,12 +98,30 @@
 
 ### [XXE](./Injection/XXE/XXE.md)
 
-#### [Overview](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/External%20XML%20Entities.md#overview)
+#### [Overview](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/XXE.md#overview)
 
-##### [XML](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/External%20XML%20Entities.md#xml)
+##### [XML](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/XXE.md#xml)
 
-##### [Entities && The DTD](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/External%20XML%20Entities.md#entities--the-dtd)
+##### [Entities && The DTD](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/XXE.md#entities--the-dtd)
 
-#### [XXE Types](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/External%20XML%20Entities.md#xxe-types)
+#### [XXE Types](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/XXE.md#xxe-types)
+
+##### [Inband](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/XXE.md#inband)
+
+##### [Error Based](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/XXE.md#out-of-band-oob)
+
+##### [Out of Band (OOB)](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/XXE.md#out-of-band-oob)
+
+#### [Attacks && Payloads](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/XXE.md#attacks--payloads)
+
+##### [Read System Files](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/XXE.md#read-system-files)
+
+##### [External DTD Payloads](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/XXE.md#external-dtd-payloads)
+
+##### [Blind XXE Paylods Using External DTDs](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/XXE.md#blind-xxe-paylods-using-external-dtds)
+
+##### [Filter Evasion](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/XXE.md#filter-evasion)
+
+##### [Exfiltration && Pitfalls](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/XXE.md#exfiltration--pitfalls)
 
 ## [SSRF](./SSRF/SSRF.md)

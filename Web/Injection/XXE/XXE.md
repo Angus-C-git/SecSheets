@@ -88,7 +88,7 @@ Entites operate like variables within the XML document where, once defined, they
 + This also leads to SSRF (Server Side Request Forgery)
 
 
-# Atacks && Payloads
+# Attacks && Payloads
 
 ## Read System Files
 
