@@ -125,3 +125,7 @@
 ##### [Exfiltration && Pitfalls](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/XXE.md#exfiltration--pitfalls)
 
 ## [SSRF](./SSRF/SSRF.md)
+
+## [Cryptography for Web](./Web%20Cryptography)
+
+### [Padding Oracle Attacks](./Web%20Cryptography/Padding%20Oracle.md)
