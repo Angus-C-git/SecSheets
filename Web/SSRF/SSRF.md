@@ -5,7 +5,7 @@
 
 ## Anatomy Of A Modern Web Application
 
-![SSRF Diagram](./images/SSRF_diaggram.png)
+![SSRF Diagram](./images/SSRF_Diagram.png)
 
 ## SSRF Conceputally
 
