@@ -311,6 +311,10 @@ onto a legitimate query
 
 `'str'||'ing'`
 
+## CHAR Codes
+
++ [ASCII table](https://www.asciitable.xyz)
+
 # Fingerprinting Payloads
 
 ## Versions
@@ -365,3 +369,17 @@ onto a legitimate query
 
 `' & 1='1'`
 
+# Resources
+
++ [Portswigger SQLi Cheatsheet](https://portswigger.net/web-security/sql-injection/cheat-sheet)
++ [Portswigger UNION attacks](https://portswigger.net/web-security/sql-injection/union-attacks)
++ [Portswigger SQLi](https://portswigger.net/web-security/sql-injection)
++ [OWASP Blind SQLi](https://owasp.org/www-community/attacks/Blind_SQL_Injection)
++ [Seclists zk blind](https://seclists.org/bugtraq/2005/Feb/att-288/zk-blind.txt)
++ [ASCII Tables](https://www.asciitable.xyz/)
++ [SQL W3C](https://www.w3schools.com/sql/default.asp)
++ [SQL map](https://github.com/sqlmapproject/sqlmap)
++ [SQLi Payloads](https://github.com/payloadbox/sql-injection-payload-list)
++ [JSQL](https://github.com/ron190/jsql-injection)
++ [Pentest-Tools Blog SQLi](https://pentest-tools.com/blog/sql-injection-attacks)
++ [SQL Syntax Notes](https://docs.google.com/document/d/1GA5L7uLJupvaW6j0L7agtpfKE21ifDzt_pSFvvUfNQU/edit?usp=sharing)
