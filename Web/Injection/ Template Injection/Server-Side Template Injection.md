@@ -11,6 +11,10 @@
 + Attempt to induce template related errors which reveal the template engine in use
 + Craft a exploit specific to the templating engine
 
+![Determining Template Engine](./images/Template_Engine_Decision_Diagram.png)
+
+~ From [Portswigger](https://portswigger.net/web-security/images/template-decision-tree.png) ~
+
 ## Typical Examples of Injectable Areas
 
 ### URL Paramters
