@@ -5,7 +5,7 @@
 Before you generate an issue:
 
 + Take a look at the list of currently unresloved issues, bug reports and feature requests.
-+ If your issue, or a very similar issue, has already been submitted bump/upvote the issue or leave a comment rather than gnerating a new issue. 
++ If your issue, or a very similar issue, has already been submitted bump/upvote the issue or leave a comment rather than generating a new issue. 
 
 ## Contributing
 
@@ -25,5 +25,5 @@ If you can't validate or find a refrence which supports a conclusion in your con
 
 ## Thank You!
 
-Lastly thanks for contributing to this project! I hope that one day this repo can be a useful resource for people on all parts of their security journey.
+Lastly thanks for contributing to this project! I hope that one day this repo can be a useful resource for people.
 

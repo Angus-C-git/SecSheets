@@ -130,4 +130,6 @@
 
 ## Cryptography
 
-### ‣ [Padding Oracle Attacks](./Web%20Cryptography/Padding%20Oracle.md)
+### ‣ [Padding Oracle Attacks](./Cryptography/PaddingOracle.md)
+
+### ‣ [TLS Cipher Suites](./Cryptography/TLSCipherSuites.md)
