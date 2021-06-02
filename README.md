@@ -20,7 +20,9 @@ SecSheets is always a work in progress! If you have a sheet you'd like to add or
 
 # Contents
 
+## ‣ [Cryptography](./Cryptography/README.md)
 ## ‣ [Binary Exploitation](./Binary%20Exploitation/README.md) 
 ## ‣ [Web](./Web/README.md)
+## ‣ [Networks](./Networks/README.md)
 ## ‣ [Mobile](./Mobile/README.md)
 
