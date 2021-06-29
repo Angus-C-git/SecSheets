@@ -122,14 +122,8 @@
 
 ##### ‣ [Filter Evasion](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/XXE.md#filter-evasion)
 
-##### ‣ [Exfiltration && Pitfalls](https://github.com/Angus-C-git/SecSheets/blob/master/Web/Injection/XXE/XXE.md#exfiltration--pitfalls)
+##### ‣ [Exfiltration && Pitfalls](./Injection/XXE/XXE.md#exfiltration--pitfalls)
 
 ## SSRF
 
-#### ‣ [Overview](#)
-
-## Cryptography
-
-### ‣ [Padding Oracle Attacks](./Cryptography/PaddingOracle.md)
-
-### ‣ [TLS Cipher Suites](./Cryptography/TLSCipherSuites.md)
+#### ‣ [Overview](./SSRF/SSRF.md)
