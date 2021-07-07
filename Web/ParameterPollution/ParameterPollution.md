@@ -2,9 +2,9 @@
 
 ## Overview
 
-+ Involves sending repeated parameters in URLs with diffrent values
++ Involves sending repeated parameters in URLs with different values
 + For example `https://www.domain.com/posts.php?u=http://facebook.com/81738hha&title=foo&u=attacker.domain.com` 
-+ Depending on the backend architecture diffrent things will occur in realtion to the repeated parameter
++ Depending on the backend architecture different things will occur in relation to the repeated parameter
 	+ In some cases the first instance of the parameter will be excepted
 	+ In others the last instance of the parameter
 	+ In further casesthe parameters may be concatenated together 

@@ -1,51 +1,51 @@
 # Server Side Request Forgery {SSRF}
 
-# Overview
+## Overview
 
-## Anatomy Of A Web Application
+### Anatomy Of A Web Application
 
 ![SSRF Diagram](./images/SSRF_Diagram.png)
 
-## SSRF Conceputally
+### SSRF Conceptually
 
-+ A SSRF exploit abuses the nature of web application systems, like most sytems, to be hardened to external traffic but relatively unprotected internally
-+ Exploiting a SSRF vulnerability allows an attacker to leverage the trusted nature of the internally facing web application against itself in order to retrive and access resources on their behalf, which ordinarly they could not reach without privillaged authentication or internal network access
-+ Additionally it may be possible to utlise the web application to move laterally through the internal network to other infrastructure resulting in potential RCE
++ A SSRF exploit abuses the nature of web application systems, like most systems, to be hardened to external traffic but relatively unprotected internally
++ Exploiting a SSRF vulnerability allows an attacker to leverage the trusted nature of the internally facing web application against itself in order to retrieve and access resources on their behalf, which ordinarily they could not reach without privileged authentication or internal network access
++ Additionally it may be possible to utilise the web application to move laterally through the internal network to other infrastructure resulting in potential RCE
 
-## Sources Of SSRF Vulnrabilities
+### Sources Of SSRF Vulnerabilities
 
-+ SSRF vulnrabilities typically arise when web applications allow users to include URL or URI based content as part of a function of the application
-+ At a less abstract level SSRF vulnrabilities can arise when: 
++ SSRF vulnerabilities typically arise when web applications allow users to include URL or URI based content as part of a function of the application
++ At a less abstract level SSRF vulnerabilities can arise when: 
 	+ Blacklists and whitelists are used to protect against SSRF
-	+ The web application has a open redirect vulnrability
-	+ The web application has a XXE vulnrability 
+	+ The web application has a open redirect vulnerability
+	+ The web application has a XXE vulnerability 
 
-# Tooling
-
+## Tooling
+ 
 + [SSRFmap](https://github.com/swisskyrepo/SSRFmap)
 
-# SSRF Vectors
+## SSRF Vectors
 
-## SSRF Against the Host
+### SSRF Against the Host
 
 + Ultimately all web applications run on some kind of hardware at their core
 + From here layers of software build up to the web application that users interact with
 + However those lower layers do not always drop away from the user access level meaning that software running at a lower level can still be interacted with through the web application
-+ It is this risidual or unintended exposure of vestigial software layers which lead to host based SSRF vulnerabilities
++ It is this residual or unintended exposure of vestigial software layers which lead to host based SSRF vulnerabilities
 
-### Layers of a modern Web Application
+#### Layers of a Modern Web Application Host
 
 ![SSRF Against The Host Diagram](./images/WebApp_Host_Diagram.png)
 
-### Approach
+#### Approach
 
 + To perform this kind of SSRF attack and attacker attempts to have the host fetch resources on their behalf exploiting the fact that the host is inherently trusted as a 'privilaged actor'
 + For example if an attacker where to attempt to access a admin page through the front end web application in a standard fashion without authenticating the web application returns an admin login panel
 + However if an attacker can induce the web applications host itself to access the admin page the attacker will be presented with the admin dashboard
 
-### Finding Host Based SSRF Vectors
+#### Finding Host Based SSRF Vectors
 
-+ Whenever a web application makes a request to itslef using a full URL path it may be possible to replay a modified version of the request to get an SSRF exploit
++ Whenever a web application makes a request to itself using a full URL path it may be possible to replay a modified version of the request to get an SSRF exploit
 
 ```
 POST /product/stock HTTP/1.0
@@ -68,9 +68,9 @@ stockApi=http://localhost/admin
 
 + Additionally host based SSRF may be found anywhere fully qualified  URLs are used to access or include resources
 	+ Profile images via URLs
-	+ Embeded content via URLs
+	+ Embedded content via URLs
 
-### General Payloads
+#### General Payloads
 
 `http://localhost/resource_from_host_perspective`
 
@@ -78,86 +78,86 @@ stockApi=http://localhost/admin
 
 `http://127.1/resource_from_host_perspective`
 
-## SSRF Against Internal Systems
+### SSRF Against Internal Systems
 
 + SSRF attacks against other hosts on the internal network exploit the trusted relationship between systems in a private network
 + In a SSRF against other internal systems an attacker attempts to access another host on the internal network as the web servers host machine
 
-### Approach
+#### Approach
 
 + An attacker attempts to learn the internal network topology of a web applications backend
-+ This may be done through a vulnrability chain which allows for internal network scanning like a XSS vulnrability or command injection
++ This may be done through a vulnerability chain which allows for internal network scanning like a XSS vulnerability or command injection
 + Or via enumerating the subnet range of the internal network
-+ If an attacker recives a response on a particular IP they have likely discovered a internal host at that location
++ If an attacker receives a response on a particular IP they have likely discovered a internal host at that location
 
-### Finding Internal Systems SSRF
+#### Finding Internal Systems SSRF
 
 + Similarly to host based SSRF an attacker looks for places within the web application where fully qualified urls are used to access and fetch resources
 + An attacker then replaces these requests with the private IP address of a known, guessed or enumerated host on the internal network
 + Since the internal host may not return a response that the web server understands in a way that allows it to display a meaningful response this kind of SSRF may be blind
 
-# SSRF WAF && Filter Bypasses
+## SSRF WAF && Filter Bypasses
 
-+ If the web application attempts to prevent SSRF vectors via filtering or WAF rules it may be possible to circumvent these defenses using one or a combination of the work arounds bellow
++ If the web application attempts to prevent SSRF vectors via filtering or WAF rules it may be possible to circumvent these defenses using one or a combination of the workarounds bellow
 
-## Blacklists
+### Blacklists
 
 + Where the web application runs requests against a list of ban strings or regex patterns
 	+ `localhost`
 	+ `127.`
 	+ `::`
 
-### DNS Resolution to localhost
+#### DNS Resolution to localhost
 
 `http://localtest.me/`
 
-### Decimal
+#### Decimal
 
 `http://21307064433/`
 
-### Hexadecimal
+#### Hexadecimal
 
 `http://0x7f000001/`
 
-### Octal
+#### Octal
 
 `http://0177.0.0.01/`
 
-### All IPs
+#### All IPs
 
 `http://0.0.0.0/`
 
-### IPv6
+#### IPv6
 
 `http://0:0:0:0:0:0:0:1`
 
-## Whitelists
+### Whitelists
 
 + Where the web application only allows URLs which match a list of strings or regex patterns
 	+ `https://the.domain.com`
 	+ `https://125.63`
 
-### @ Bypass
+#### `@` Bypass
 
 `https://expected-host@localhost/`
 
-### URL Fragment
+#### URL Fragment
 
 `https://localhost#expected-host`
 
-## Open Redirects
+### Open Redirects
 
 + If the web application contains an open redirect vulnerability it maybe be possible to leverage it to develop a SSRF exploit
-+ An sufficent open redirect vulnrability would mean that even if the application is hardened against SSRF based vectors they can be negated by abusing the trust of the API 'host' that handels redirections
++ An sufficient open redirect vulnerability would mean that even if the application is hardened against SSRF based vectors they can be negated by abusing the trust of the API 'host' that handles redirection
 
-### Approach
+#### Approach
 
 
 + Consider a web application like an online shop which allows a user to cycle through products using a fully qualified URL to point to the next item but which also contains a redirection
 
 `http://weliketoshop.net/product/nextProduct?currentProductId=1&path=/product?productId=2`
 
-+ In this case the path paramter is vulnerable to an open redirect vulnerability which allows the attack to specifiy an internal IP address as the value of the path paramter
++ In this case the path parameter is vulnerable to an open redirect vulnerability which allows the attack to specify an internal IP address as the value of the path parameter
 
 `http://weliketoshop.net/product/nextProduct?currentProductId=1&path=http://10.10.0.10/admin`
 
@@ -173,7 +173,7 @@ stockApi=http://weliketoshop.net/product/nextProduct?currentProductId=6&path=htt
 
 ~ Credits to portswiggers SSRF lab for the sample web application ~
 
-# Resources
+## Resources
 
 + [Portswigger SSRF Labs](https://portswigger.net/web-security/ssrf)
 + [DZ Zone Open redirects](https://dzone.com/articles/what-is-an-open-redirection-vulnerability-and-how)
