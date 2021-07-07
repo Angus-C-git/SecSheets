@@ -1,6 +1,6 @@
 # Parameter Pollution
 
-# Overview
+## Overview
 
 + Involves sending repeated parameters in URLs with diffrent values
 + For example `https://www.domain.com/posts.php?u=http://facebook.com/81738hha&title=foo&u=attacker.domain.com` 
@@ -11,9 +11,7 @@
 
 ![URL Handling PHP](./images/url_handling.png)
 
-# Identification
-
-## Approach
+## Identification
 
 + Look for URL parameters which are not encoded
 + Attempt to determine what backend infrastructure is running
@@ -23,6 +21,6 @@
 ![Polutable URL Diagram](./images/pollutable_url.png)
 
 
-# Resources
+## Resources
 
 + [PwnFunction](https://www.youtube.com/watch?v=QVZBl8yxVX0)
