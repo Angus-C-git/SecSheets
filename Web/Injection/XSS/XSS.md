@@ -379,7 +379,7 @@ document.addEventlistener('click', () =>
 
 + Amazons EC2 instances are my personal go to
 
-###### Pros
+**Pros**
 
 + Free under a certain threshold which is more than adequate for an exfiltration server
 	+ 30 GB disk
@@ -389,13 +389,13 @@ document.addEventlistener('click', () =>
 + Fast to connect, little machine configuration required
 	+ Can all be done through managment console
 
-###### Cons
+**Cons**
 
 + HTTPs server configuration is more fiddly
 + Listeners need to be setup manually
 
 
-###### Usage
+**Usage**
 
 + Spin up a linux instance (Ubuntu, Fedora, etc)
 + Open ports for http listener traffic (ie 8888)
