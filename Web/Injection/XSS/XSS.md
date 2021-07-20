@@ -402,64 +402,71 @@ document.addEventlistener('click', () =>
 + Follow connect tab instructions (Connect > ssh key.pem)
 + Start listener
 + Point payloads to instances public IP
-
-####### NC
-
-`$ nc -l port`
-
-`$ netcat -l port`
-
-####### Python Simple HTTP
-
-`$ python -m http.server port`
      
 
 #### [Pipedream.com](https://pipedream.com)
 
 + Another personal favorite
 
-###### Pros
+**Pros**
 
 + Nearly zero setup, just make an account and start a webhook
 + Free for anyone
 + Clean UI
 + No configuration for HTTP or HTTPs
 
-###### Cons
+**Cons**
 
 + Not as flexiable as a server
 
-###### Usage
+**Usage**
 
 + Point scripts to webhook address (https://uniquestr.m.pipedream.net)
 
+#### [Ngrok](https://ngrok.com/)
+
++ 'Secure' tunnel to localhost
+
+**Pros**
+
++ Get requests right in your terminal
++ Http and https mirrors
++ Custom ports
+
+**Cons**
+
++ Bit sketch
++ Points to your machine
+
 #### [Digital Ocean Droplets](https://cloud.digitalocean.com/droplets) 
 
-###### Pros
+**Pros**
 
 + Get $100 credit for free as a student
 + Lowest tier machine is more than adequate
 + Simple setup
 + Public IPv4 and IPv6 
 
-###### Cons
+**Cons**
 
 + $5 per month for lowest tier is steep
 
-##### Usage
+**Usage**
 
 + Spin up a linux droplet (Ubuntu, Fedora, etc)
 + Ssh to droplets public IP
 + Start listener
 + Point payloads to instances public IP
 
-###### NC
+### Listners
+
+#### NC
 
 `$ nc -l port`
 
 `$ netcat -l port`
 
-###### Python Simple HTTP
+#### Python Simple HTTP
 
 `$ python -m http.server port`
      
