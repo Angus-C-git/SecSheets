@@ -486,7 +486,7 @@ parts of web applications interpret as delimiters or other characters
 + A common example of this is when injecting payloads into felids on a web app or the address bar which contain the `+` character commonly used to concatenate strings in JS,
 the `+` character in many cases will be 'transformed' into a `space` character consequently breaking the JS syntax and your payload
 
-###### Common 'Bad/interpreted Characters'
+##### Common 'Bad/interpreted Characters'
 ```
 | Interpreted Character | URL Encoding (Patch) |
 |-----------------------|----------------------|
@@ -498,7 +498,7 @@ the `+` character in many cases will be 'transformed' into a `space` character c
 | #                     | %23                  |
 ```
 
-####### Checking Character Encoding
+**Checking Character Encoding**
 
 + In Burpsuite use the decoder tab
 + Python3 `$ python3 >> hex(ord("char"))`
