@@ -188,7 +188,7 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 `GIF89a/*<svg/onload=alert(1)>*/=alert(1)//;`
 
 
-# Exploit Payloads
+## Exploit Payloads
 
 + Malicious js code for exploit payloads
 
@@ -375,7 +375,7 @@ document.addEventlistener('click', () =>
 
 + This section aims to document several approaches to setting up an attack server for XSS exfiltration 
 
-#### [AWS EC2 Instance](https://us-east-2.console.aws.amazon.com/ec2/)
+### [AWS EC2 Instance](https://us-east-2.console.aws.amazon.com/ec2/)
 
 + Amazons EC2 instances are my personal go to
 
@@ -404,7 +404,7 @@ document.addEventlistener('click', () =>
 + Point payloads to instances public IP
      
 
-#### [Pipedream.com](https://pipedream.com)
+### [Pipedream.com](https://pipedream.com)
 
 + Another personal favorite
 
@@ -423,7 +423,7 @@ document.addEventlistener('click', () =>
 
 + Point scripts to webhook address (https://uniquestr.m.pipedream.net)
 
-#### [Ngrok](https://ngrok.com/)
+### [Ngrok](https://ngrok.com/)
 
 + 'Secure' tunnel to localhost
 
@@ -438,7 +438,7 @@ document.addEventlistener('click', () =>
 + Bit sketch
 + Points to your machine
 
-#### [Digital Ocean Droplets](https://cloud.digitalocean.com/droplets) 
+### [Digital Ocean Droplets](https://cloud.digitalocean.com/droplets) 
 
 **Pros**
 
@@ -472,7 +472,7 @@ document.addEventlistener('click', () =>
      
 
 
-## Tips && Tricks
+## Debugging Payloads
 
 ### Payload Doesn't Work 
 
@@ -536,7 +536,7 @@ the `+` character in many cases will be 'transformed' into a `space` character c
 + Base 64 encode long strings and then use the JS `atob(string)` in the payload body to decode the string back to plain text 
 + Add or remove `;//` after url strings 
 
-# Finding && Exploiting XSS
+## Finding && Exploiting XSS
 
 ### Identification Checklist
 
