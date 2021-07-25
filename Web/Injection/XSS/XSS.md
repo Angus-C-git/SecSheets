@@ -533,7 +533,7 @@ the `+` character in many cases will be 'transformed' into a `space` character c
 ###### Workarounds
 
 + Test payloads on other browsers
-+ Try alternative JS syntax
++ **Try alternative JS syntax**
 + Try alternative HTML tags/attributes
 + Check W3C and other online resources to see what browsers support elements of your payload
 
