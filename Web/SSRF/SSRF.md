@@ -176,4 +176,5 @@ stockApi=http://weliketoshop.net/product/nextProduct?currentProductId=6&path=htt
 ## Resources
 
 + [Portswigger SSRF Labs](https://portswigger.net/web-security/ssrf)
++ [All Things SSRF - Resource list](https://github.com/jdonsec/AllThingsSSRF)
 + [DZ Zone Open redirects](https://dzone.com/articles/what-is-an-open-redirection-vulnerability-and-how)
