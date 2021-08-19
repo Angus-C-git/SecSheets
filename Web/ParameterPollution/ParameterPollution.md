@@ -1,4 +1,4 @@
-# Parameter Pollution
+# HTTP Parameter Pollution (HPP)
 
 ## Overview
 

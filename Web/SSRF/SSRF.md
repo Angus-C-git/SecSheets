@@ -1,4 +1,4 @@
-# Server Side Request Forgery {SSRF}
+# Server Side Request Forgery (SSRF)
 
 ## Overview
 

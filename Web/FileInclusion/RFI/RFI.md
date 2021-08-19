@@ -1,4 +1,4 @@
-# Remote File Inclusion {RFI}
+# Remote File Inclusion (RFI)
 
 ## Arbitrary File Upload
 

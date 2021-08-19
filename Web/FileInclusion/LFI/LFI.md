@@ -1,4 +1,4 @@
-# Local File Inclusion {LFI}
+# Local File Inclusion (LFI)
 
 ## Overview
 

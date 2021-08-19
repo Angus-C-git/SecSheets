@@ -1,4 +1,4 @@
-# Insecure Direct Object Refrences (IDOR)
+# Insecure Direct Object References (IDOR)
 
 ## Overview
 

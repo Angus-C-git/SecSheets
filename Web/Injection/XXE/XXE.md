@@ -1,4 +1,4 @@
-External XML Entities
+External XML Entities (XXE)
 =====================
 
 ## Overview
