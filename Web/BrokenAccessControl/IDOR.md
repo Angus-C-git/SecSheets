@@ -14,4 +14,4 @@ IDOR vulnerabilities can often lead to exposure of private or restricted informa
 
 
 
-Here the web application uses a vulnerable configuration to retrive a users private profile data via their profile id (14), which is passed as a parameter in the request sent to the backend. Since the server makes no attempt to validate if the user attempting to access the resource is the legitimate user an attacker could simply enumerate the profile_overview parameter to leak user data.   
+Here the web application uses a vulnerable configuration to retrieve a users private profile data via their profile id (14), which is passed as a parameter in the request sent to the backend. Since the server makes no attempt to validate if the user attempting to access the resource is the legitimate user an attacker could simply enumerate the profile_overview parameter to leak user data.   
