@@ -1,10 +1,10 @@
 # Server Side Request Forgery (SSRF)
 
-## Overview
+Server Side Request Forgery (SSRF) is a exploit class which attacks the underlying host and surrounding internal infrastructure of a web application. When exploited it may give an attacker the ability to make requests as if they were come from one of the internal services, which may additionally allow the attacker to view/modify critical and protected data as well as move laterally through the internal network.
 
 ### Anatomy Of A Web Application
 
-![SSRF Diagram](./images/SSRF_Diagram.png)
+{{< image ref="images/SSRF_Diagram.png" >}}
 
 ### SSRF Conceptually
 
@@ -21,7 +21,7 @@
 	+ The web application has a XXE vulnerability 
 
 ## Tooling
- 
+
 + [SSRFmap](https://github.com/swisskyrepo/SSRFmap)
 
 ## SSRF Vectors
@@ -33,13 +33,13 @@
 + However those lower layers do not always drop away from the user access level meaning that software running at a lower level can still be interacted with through the web application
 + It is this residual or unintended exposure of vestigial software layers which lead to host based SSRF vulnerabilities
 
-#### Layers of a Modern Web Application Host
+#### Layers of a modern Web Application
 
-![SSRF Against The Host Diagram](./images/WebApp_Host_Diagram.png)
+{{< image ref="images/WebApp_Host_Diagram.png" >}}
 
 #### Approach
 
-+ To perform this kind of SSRF attack and attacker attempts to have the host fetch resources on their behalf exploiting the fact that the host is inherently trusted as a 'privilaged actor'
++ To perform this kind of SSRF attack and attacker attempts to have the host fetch resources on their behalf exploiting the fact that the host is inherently trusted as a 'privileged actor'
 + For example if an attacker where to attempt to access a admin page through the front end web application in a standard fashion without authenticating the web application returns an admin login panel
 + However if an attacker can induce the web applications host itself to access the admin page the attacker will be presented with the admin dashboard
 
@@ -66,7 +66,7 @@ Content-Length: 118
 stockApi=http://localhost/admin 
 ```  
 
-+ Additionally host based SSRF may be found anywhere fully qualified  URLs are used to access or include resources
++ Additionally, host based SSRF may be found anywhere fully qualified  URLs are used to access or include resources
 	+ Profile images via URLs
 	+ Embedded content via URLs
 
@@ -98,7 +98,7 @@ stockApi=http://localhost/admin
 
 ## SSRF WAF && Filter Bypasses
 
-+ If the web application attempts to prevent SSRF vectors via filtering or WAF rules it may be possible to circumvent these defenses using one or a combination of the workarounds bellow
++ If the web application attempts to prevent SSRF vectors via filtering or WAF rules it may be possible to circumvent these defenses using one or a combination of the work around bellow
 
 ### Blacklists
 
@@ -137,7 +137,7 @@ stockApi=http://localhost/admin
 	+ `https://the.domain.com`
 	+ `https://125.63`
 
-#### `@` Bypass
+#### @ Bypass
 
 `https://expected-host@localhost/`
 
@@ -176,5 +176,4 @@ stockApi=http://weliketoshop.net/product/nextProduct?currentProductId=6&path=htt
 ## Resources
 
 + [Portswigger SSRF Labs](https://portswigger.net/web-security/ssrf)
-+ [All Things SSRF - Resource list](https://github.com/jdonsec/AllThingsSSRF)
 + [DZ Zone Open redirects](https://dzone.com/articles/what-is-an-open-redirection-vulnerability-and-how)

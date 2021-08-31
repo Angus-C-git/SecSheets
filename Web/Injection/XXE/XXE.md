@@ -1,13 +1,14 @@
 External XML Entities (XXE)
 =====================
 
-## Overview
+External XML Entity (XXE) injection the process of inserting malicious `xml` tags into fields which either intentionally accept XML or unknowingly allow XML to be parsed on the backend. XXE exploits target the parser which runs server side in order to include resources from the host such as important files. Since the XXE injection often occurs through file uploads the parsed document usually cannot be resolved on the frontend, hence XXE injection is typically performed out of band with a listening server to capture the response from a successful payload.
 
-### XML
+
+## XML
 
 Extensible Markup Language is a way of structuring data similar to JSON which has overtaken XML in popularity and largely replaced it in general.
 
-#### XML Structure && Syntax
+#### XML Structure and Syntax
 
 ```xml
 <?xml version="1.0"?>
@@ -21,7 +22,7 @@ Extensible Markup Language is a way of structuring data similar to JSON which ha
 + Tags are case sensitive
 + "",'',<,> are illegal characters in XML due to the parser not knowing how to handel them
 
-### Entities && The DTD
+### Entities and The DTD
 
 Entities operate like variables within the XML document where, once defined, they can be used anywhere throughout the document. XML entities live within a specific part of the XML document known as the DTD.
 

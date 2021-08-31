@@ -1,8 +1,7 @@
 # Server-Side Template Injection {SSTI}
 
-## Overview
+Server Side template injection is a vulnerability that arises when the web application utilizes a templating engine and excepts user input directly into a templated field or allows a user to use template commands directly without; limit, sanitization or restriction
 
-+ Server Side template injection is a vulnerability that arises when the web application utilizes a templating engine and excepts user input directly into a templated field or allows a user to use template commands directly without; limit, sanitization or restriction
 
 ## Testing for Server-Side Template Injection
 

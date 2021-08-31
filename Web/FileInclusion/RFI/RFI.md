@@ -1,5 +1,8 @@
 # Remote File Inclusion (RFI)
 
+Remote file inclusion is a category of exploit where an attacker can manipulate a web application into including a remote file. This file may be uploaded by the attacker or included through some other means like a URL or a rich text like form or 'sandbox'.
+
+
 ## Arbitrary File Upload
 
 + RFI from an arbitrary file upload is a typical exploitation strategy that occurs when a web application    

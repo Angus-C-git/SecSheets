@@ -1,8 +1,6 @@
 Cross Site Scripting (XSS)
 ==========================
 
-## Overview
-
 Cross Site Scripting or XXS vulnerabilities arise when user controlled data is injected into the DOM in such a way that it is interpreted as JavaScript by the parser resulting in its execution when rendered by the browser. 
 
 ## Identification Payloads

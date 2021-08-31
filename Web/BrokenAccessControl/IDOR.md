@@ -1,7 +1,5 @@
 # Insecure Direct Object References (IDOR)
 
-## Overview
-
 IDOR vulnerabilities are a common class of access control vulnerability in web applications which occur when the web application uses client controlled parameters/inputs to refer to objects directly.
 
 IDOR vulnerabilities can often lead to exposure of private or restricted information, or the ability to modify unintended records in the database.

@@ -1,11 +1,7 @@
 Web Application: Enumeration/Recon
 ============================
 
-## Overview
-
-+ Recon and enumeration is about getting a bigger picture of a target
-+ Recon and enumeration are critical prerequisites to getting a successful exploit
-+ Knowing the technologies the target employees allows an attacker to eliminate false positives, more accurately test for vulnerabilities and saves time in the long run
+Recon and enumeration is about getting a bigger picture of a target. Recon and enumeration are critical prerequisites to getting a successful exploit. Knowing the technologies the target employees allows an attacker to eliminate false positives, more accurately test for vulnerabilities and saves time in the long run.
 
 ## Passive Recon
 

