@@ -461,109 +461,16 @@ document.addEventlistener('click', () =>
 
 This section aims to document several approaches to setting up an attack server for XSS exfiltration 
 
-### [AWS EC2 Instance](https://us-east-2.console.aws.amazon.com/ec2/)
-
-+ Amazons EC2 instances are my personal go to
-
-**Pros**
-
-+ Free under a certain threshold which is more than adequate for an exfiltration server
-	+ 30 GB disk
-	+ 1 CPU
-+ Public IPv4 address 
-+ Possible to configure a IPv6 address also
-+ Fast to connect, little machine configuration required
-	+ Can all be done through management console
-
-**Cons**
-
-+ HTTPs server configuration is more fiddly
-+ Listeners need to be setup manually
++ [AWS EC2 Instance](https://us-east-2.console.aws.amazon.com/ec2/)
++ [Pipedream.com](https://pipedream.com)
++ [Ngrok](https://ngrok.com/)
++ [Digital Ocean Droplets](https://cloud.digitalocean.com/droplets) 
 
 
-**Usage**
-
-+ Spin up a linux instance (Ubuntu, Fedora, etc)
-+ Open ports for http listener traffic (ie 8888)
-+ Follow connect tab instructions (Connect > ssh key.pem)
-+ Start listener
-+ Point payloads to instances public IP
-     
-
-### [Pipedream.com](https://pipedream.com)
-
-+ Another personal favorite
-
-**Pros**
-
-+ Nearly zero setup, just make an account and start a webhook
-+ Free for anyone
-+ Clean UI
-+ No configuration for HTTP or HTTPs
-
-**Cons**
-
-+ Not as flexible as a server
-
-**Usage**
-
-+ Point scripts to webhook address (https://uniquestr.m.pipedream.net)
-
-### [Ngrok](https://ngrok.com/)
-
-+ 'Secure' tunnel to localhost
-
-**Pros**
-
-+ Get requests right in your terminal
-+ Http and https mirrors
-+ Custom ports
-
-**Cons**
-
-+ Bit sketch
-+ Points to your machine
-
-### [Digital Ocean Droplets](https://cloud.digitalocean.com/droplets) 
-
-**Pros**
-
-+ Get $100 credit for free as a student
-+ Lowest tier machine is more than adequate
-+ Simple setup
-+ Public IPv4 and IPv6 
-
-**Cons**
-
-+ $5 per month for lowest tier is steep
-
-**Usage**
-
-+ Spin up a linux droplet (Ubuntu, Fedora, etc)
-+ Ssh to droplets public IP
-+ Start listener
-+ Point payloads to instances public IP
-
-### Listeners
-
-#### NC
-
-`$ nc -l port`
-
-`$ netcat -l port`
-
-#### Python Simple HTTP
-
-`$ python -m http.server port`
-     
+## Debugging Payloads & Pitfalls
 
 
-## Debugging Payloads
-
-### Payload Doesn't Work 
-
-+ If your payload doesn't work after finding a injection point vulnerable to a basic test 
-these are some common reasons payloads fail
+If your payload doesn't work after finding a injection point vulnerable to a basic test these are some common reasons payloads fail
 
 #### Browser/Web Application Encoding
 
