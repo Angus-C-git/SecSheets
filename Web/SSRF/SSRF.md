@@ -4,7 +4,8 @@ Server Side Request Forgery (SSRF) is a exploit class which attacks the underlyi
 
 ### Anatomy Of A Web Application
 
-{{< image ref="images/SSRF_Diagram.png" >}}
+![SSRF_Diagram](https://user-images.githubusercontent.com/44337835/135016171-10c7b893-3bdb-4103-a4c6-4b6247b91ef4.png)
+
 
 ### SSRF Conceptually
 
@@ -35,7 +36,7 @@ Server Side Request Forgery (SSRF) is a exploit class which attacks the underlyi
 
 #### Layers of a modern Web Application
 
-{{< image ref="images/WebApp_Host_Diagram.png" >}}
+![WebApp_Host_Diagram](https://user-images.githubusercontent.com/44337835/135016176-c668ca7b-afe3-4970-ba26-d4ba61044983.png)
 
 #### Approach
 
