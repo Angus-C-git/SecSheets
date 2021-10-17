@@ -15,8 +15,8 @@ This project tries to avoid imitating the amazing [Payload-all-the-things](#) re
 
 # Contents
 
-## ‣ [Binary Exploitation](./Binary%20Exploitation/README.md) 
-## ‣ [Web](./Web/README.md)
+### ‣ [Binary Exploitation](./Binary%20Exploitation/README.md) 
+### ‣ [Web](./Web/README.md)
 <!-- COMING SOON ;) 
 ## ‣ [Networks](./Networks/README.md)
 ## ‣ [Mobile](./Mobile/README.md)
